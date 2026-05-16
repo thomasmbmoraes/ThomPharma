@@ -24,3 +24,16 @@ hs_err_pid*
 replay_pid*
 /farmap-novo/nbproject/private/
 /farmap-novo/build/
+
+# Maven
+target/
+farmap-novo/
+*.class
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
