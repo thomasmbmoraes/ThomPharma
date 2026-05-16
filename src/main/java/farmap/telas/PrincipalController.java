@@ -45,7 +45,17 @@ public class PrincipalController {
 
     @FXML
     private void abrirTabelas() {
-        System.out.println("Tabelas - em desenvolvimento");
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/farmap/usuarios.fxml")
+            );
+            App.getStage().getScene().setRoot(loader.load());
+            App.getStage().setWidth(700);
+            App.getStage().setHeight(500);
+            App.getStage().centerOnScreen();
+        } catch (Exception e) {
+            System.out.println("Erro ao abrir usuarios: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -63,8 +73,8 @@ public class PrincipalController {
         try {
         App.setRoot("login");
         App.getStage().setTitle("Farmap - Login");
-    } catch (Exception e) {
-        System.out.println("Erro ao fazer logoff: " + e.getMessage());
-    }
+        } catch (Exception e) {
+            System.out.println("Erro ao fazer logoff: " + e.getMessage());
+        }
     }
 }
