@@ -1,10 +1,14 @@
 package farmap.telas;
 
+import farmap.App;
 import farmap.Conexao;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -39,14 +43,20 @@ public class LoginController {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                System.out.println("Login realizado com sucesso! Bem vindo " + rs.getString("nome_completo"));
-                mensagemErro.setStyle("-fx-text-fill: green;");
-                mensagemErro.setText("Login realizado com sucesso!");
+                String nomeCompleto = rs.getString("nome_completo");
+                conn.close();
+
+                FXMLLoader loader = App.getLoader("principal");
+                Scene scene = new Scene(loader.load(), 600, 400);
+                PrincipalController controller = loader.getController();
+                controller.setUsuario(nomeCompleto);
+                App.getStage().setTitle("Farmap");
+                App.getStage().setScene(scene);
             } else {
                 mensagemErro.setText("Usuario ou senha incorretos!");
+                conn.close();
             }
 
-            conn.close();
         } catch (Exception e) {
             mensagemErro.setText("Erro ao conectar com banco!");
             System.out.println(e.getMessage());

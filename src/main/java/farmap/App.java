@@ -8,13 +8,28 @@ import java.io.IOException;
 
 public class App extends Application {
 
+    private static Stage stage;
+
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 400, 350);
+    public void start(Stage s) throws IOException {
+        stage = s;
+        setRoot("login");
         stage.setTitle("Farmap - Login");
-        stage.setScene(scene);
         stage.show();
+    }
+
+    public static void setRoot(String fxml) throws IOException {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
+    }
+
+    public static FXMLLoader getLoader(String fxml) throws IOException {
+        return new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+    }
+
+    public static Stage getStage() {
+        return stage;
     }
 
     public static void main(String[] args) {
