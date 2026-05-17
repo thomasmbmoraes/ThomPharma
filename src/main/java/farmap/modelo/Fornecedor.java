@@ -1,14 +1,35 @@
 package farmap.modelo;
 
+/**
+ * modelo que representa um fornecedor de materias primas
+ * cada atributo corresponde a uma coluna da tabela fornecedores no banco
+ */
 public class Fornecedor {
 
+    // identificador unico gerado automaticamente pelo banco
     private int id;
+
+    // nome comercial do fornecedor
     private String nome;
+
+    // documento do fornecedor, pode ser cpf ou cnpj
     private String cnpjCpf;
+
+    // nome da pessoa de contato na empresa fornecedora
     private String contato;
+
+    // telefone principal do fornecedor
     private String telefone;
+
+    // email do fornecedor para comunicacao
     private String email;
+
+    // cidade onde o fornecedor esta localizado
+    // valor padrao: Ribeirao Preto
     private String cidade;
+
+    // estado onde o fornecedor esta localizado
+    // valor padrao: SP
     private String uf;
 
     public int getId() { return id; }

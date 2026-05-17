@@ -1,12 +1,28 @@
 package farmap.modelo;
 
+/**
+ * modelo que representa um usuario do sistema
+ * cada atributo corresponde a uma coluna da tabela usuarios no banco
+ */
 public class Usuario {
 
+    // identificador unico gerado automaticamente pelo banco
     private int id;
+
+    // nome de login usado para acessar o sistema
     private String usuario;
+
+    // nome completo exibido no cabecalho apos o login
     private String nomeCompleto;
+
+    // senha de acesso (futuramente sera criptografada com bcrypt)
     private String senha;
+
+    // se verdadeiro, o usuario tem acesso total ao sistema
+    // se falso, o usuario tem acesso restrito (somente consulta e calculos)
     private boolean admin;
+
+    // se falso, o usuario nao consegue fazer login mesmo com senha correta
     private boolean ativo;
 
     public int getId() { return id; }

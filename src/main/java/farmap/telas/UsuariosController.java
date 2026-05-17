@@ -16,11 +16,19 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * controller do cadastro de usuarios do sistema
+ * permite criar, editar e excluir usuarios
+ * controla permissoes de administrador e status ativo/inativo
+ */
 public class UsuariosController {
 
+    // componentes da tabela de listagem
     @FXML private TableView<farmap.modelo.Usuario> tabelaUsuarios;
     @FXML private TableColumn<farmap.modelo.Usuario, String> colUsuario;
     @FXML private TableColumn<farmap.modelo.Usuario, String> colNome;
+
+    // campos do formulario
     @FXML private TextField campoUsuario;
     @FXML private TextField campoNome;
     @FXML private PasswordField campoSenha;
@@ -28,12 +36,18 @@ public class UsuariosController {
     @FXML private CheckBox checkAtivo;
     @FXML private Label mensagem;
 
+    /**
+     * executado automaticamente ao carregar a tela
+     * configura as colunas da tabela e carrega os usuarios do banco
+     */
     @FXML
     public void initialize() {
+        // configura quais atributos do modelo aparecem em cada coluna
         colUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));
         colNome.setCellValueFactory(new PropertyValueFactory<>("nomeCompleto"));
         carregarUsuarios();
 
+        // ao selecionar um usuario na tabela, preenche o formulario automaticamente
         tabelaUsuarios.getSelectionModel().selectedItemProperty().addListener(
             (obs, antigo, novo) -> {
                 if (novo != null) preencherFormulario(novo);
@@ -41,11 +55,16 @@ public class UsuariosController {
         );
     }
 
+    /**
+     * busca todos os usuarios do banco e exibe na tabela
+     */
     private void carregarUsuarios() {
         ObservableList<farmap.modelo.Usuario> lista = FXCollections.observableArrayList();
         try {
             Connection conn = Conexao.conectar();
-            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM usuarios ORDER BY usuario");
+            ResultSet rs = conn.createStatement().executeQuery(
+                "SELECT * FROM usuarios ORDER BY usuario"
+            );
             while (rs.next()) {
                 farmap.modelo.Usuario u = new farmap.modelo.Usuario();
                 u.setId(rs.getInt("id"));
@@ -62,6 +81,10 @@ public class UsuariosController {
         tabelaUsuarios.setItems(lista);
     }
 
+    /**
+     * preenche o formulario com os dados do usuario selecionado na tabela
+     * @param u usuario selecionado
+     */
     private void preencherFormulario(farmap.modelo.Usuario u) {
         campoUsuario.setText(u.getUsuario());
         campoNome.setText(u.getNomeCompleto());
@@ -71,6 +94,9 @@ public class UsuariosController {
         mensagem.setText("");
     }
 
+    /**
+     * limpa o formulario para cadastrar um novo usuario
+     */
     @FXML
     private void novo() {
         campoUsuario.setText("");
@@ -82,6 +108,11 @@ public class UsuariosController {
         tabelaUsuarios.getSelectionModel().clearSelection();
     }
 
+    /**
+     * salva o usuario no banco
+     * se nenhum usuario estiver selecionado na tabela, insere um novo
+     * se um usuario estiver selecionado, atualiza os dados dele
+     */
     @FXML
     private void salvar() {
         if (campoUsuario.getText().isEmpty() || campoSenha.getText().isEmpty()) {
@@ -93,6 +124,7 @@ public class UsuariosController {
             farmap.modelo.Usuario selecionado = tabelaUsuarios.getSelectionModel().getSelectedItem();
 
             if (selecionado == null) {
+                // insere novo usuario
                 String sql = "INSERT INTO usuarios (usuario, nome_completo, senha, admin, ativo) VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, campoUsuario.getText());
@@ -104,6 +136,7 @@ public class UsuariosController {
                 mensagem.setStyle("-fx-text-fill: green;");
                 mensagem.setText("Usuario cadastrado com sucesso!");
             } else {
+                // atualiza usuario existente
                 String sql = "UPDATE usuarios SET usuario=?, nome_completo=?, admin=?, ativo=? WHERE id=?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, campoUsuario.getText());
@@ -123,6 +156,9 @@ public class UsuariosController {
         }
     }
 
+    /**
+     * exclui o usuario selecionado na tabela
+     */
     @FXML
     private void excluir() {
         farmap.modelo.Usuario selecionado = tabelaUsuarios.getSelectionModel().getSelectedItem();
@@ -146,6 +182,9 @@ public class UsuariosController {
         }
     }
 
+    /**
+     * fecha a tela de usuarios e volta para a tela principal
+     */
     @FXML
     private void fechar() {
         try {
