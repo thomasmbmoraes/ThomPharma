@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="farmap.telas.FornecedoresController">
+
+    <top>
+        <VBox style="-fx-background-color: #2c3e50;">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Label text="Cadastro de Fornecedores"
+                   style="-fx-text-fill: white; -fx-font-size: 16px;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <HBox spacing="20">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <VBox spacing="10" prefWidth="250">
+                <Label text="Fornecedores:"/>
+                <TextField fx:id="campoFiltro" promptText="Filtrar..."/>
+                <TableView fx:id="tabelaFornecedores" prefHeight="400">
+                    <columns>
+                        <TableColumn fx:id="colNome" text="Nome" prefWidth="230"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <VBox spacing="10" prefWidth="350">
+                <fx:define>
+                    <ToggleGroup fx:id="grupoDoc"/>
+                </fx:define>
+                <Label text="Nome:"/>
+                <TextField fx:id="campoNome"/>
+                <Label text="Tipo de Documento:"/>
+                <HBox spacing="10">
+                    <RadioButton fx:id="radioCpf" text="CPF" toggleGroup="$grupoDoc"/>
+                    <RadioButton fx:id="radioCnpj" text="CNPJ" toggleGroup="$grupoDoc" selected="true"/>
+                </HBox>
+                <Label text="CNPJ/CPF:"/>
+                <TextField fx:id="campoCnpj"/>
+                <Label text="Contato:"/>
+                <TextField fx:id="campoContato"/>
+                <Label text="Telefone:"/>
+                <TextField fx:id="campoTelefone"/>
+                <Label text="Email:"/>
+                <TextField fx:id="campoEmail"/>
+                <Label text="Cidade:"/>
+                <TextField fx:id="campoCidade"/>
+                <Label text="UF:"/>
+                <TextField fx:id="campoUf" prefWidth="60"/>
+                <Label fx:id="mensagem" style="-fx-text-fill: red;"/>
+                <HBox spacing="10">
+                    <Button text="Novo" onAction="#novo"/>
+                    <Button text="Salvar" onAction="#salvar"/>
+                    <Button text="Excluir" onAction="#excluir"/>
+                </HBox>
+            </VBox>
+        </HBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Button text="Fechar" onAction="#fechar"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
