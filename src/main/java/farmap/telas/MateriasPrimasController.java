@@ -332,9 +332,8 @@ public class MateriasPrimasController {
     }
 
     /**
-     * salva um novo lote para a materia prima selecionada
-     * abre uma janela de dialogo para preencher os dados do lote
-     */
+    * abre a janela de dialogo para cadastrar um novo lote
+    */
     @FXML
     private void salvarLote() {
         MateriaPrima selecionada = tabelaMateriasPrimas.getSelectionModel().getSelectedItem();
@@ -342,8 +341,32 @@ public class MateriasPrimasController {
             mensagem.setText("Selecione uma matéria-prima primeiro!");
             return;
         }
-        mensagem.setStyle("-fx-text-fill: blue;");
-        mensagem.setText("Cadastro de lotes em desenvolvimento.");
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/farmap/lote_dialog.fxml")
+            );
+            javafx.scene.Parent root = loader.load();
+            LoteDialogController controller = loader.getController();
+            controller.setDados(selecionada.getId(), this);
+ 
+            javafx.stage.Stage dialog = new javafx.stage.Stage();
+            dialog.setTitle("Novo Lote - " + selecionada.getNome());
+            dialog.setScene(new javafx.scene.Scene(root));
+            dialog.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            dialog.showAndWait();
+        } catch (Exception e) {
+            mensagem.setText("Erro ao abrir dialogo: " + e.getMessage());
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+    * atualiza a tabela de lotes apos salvar um novo lote
+    * chamado pelo LoteDialogController apos salvar
+    * @param idMateriaPrima id da materia prima cujos lotes devem ser atualizados
+    */
+    public void atualizarLotes(int idMateriaPrima) {
+        carregarLotes(idMateriaPrima);
     }
 
     /**

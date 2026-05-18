@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="farmap.telas.LoteDialogController">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Cadastro de Lote" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+    <HBox spacing="10">
+        <VBox spacing="5">
+            <Label text="Nome do Lote:"/>
+            <TextField fx:id="campoNomeLote"/>
+        </VBox>
+        <VBox spacing="5">
+            <Label text="Validade:"/>
+            <TextField fx:id="campoValidade" promptText="dd/mm/aaaa"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="10">
+        <VBox spacing="5">
+            <Label text="Quantidade:"/>
+            <TextField fx:id="campoQuantidade"/>
+        </VBox>
+        <VBox spacing="5">
+            <Label text="Custo:"/>
+            <TextField fx:id="campoCusto"/>
+        </VBox>
+        <VBox spacing="5">
+            <Label text="Fator:"/>
+            <TextField fx:id="campoFator"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="10">
+        <VBox spacing="5">
+            <Label text="Densidade:"/>
+            <TextField fx:id="campoDensidade"/>
+        </VBox>
+        <VBox spacing="5">
+            <Label text="End. Uso:"/>
+            <TextField fx:id="campoEnderecoUso"/>
+        </VBox>
+        <VBox spacing="5">
+            <Label text="End. Estoque:"/>
+            <TextField fx:id="campoEnderecoEstoque"/>
+        </VBox>
+    </HBox>
+
+    <Label text="Fornecedor:"/>
+    <ComboBox fx:id="comboFornecedor" prefWidth="300"/>
+
+    <Label fx:id="mensagem" style="-fx-text-fill: red;"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Salvar" onAction="#salvar"/>
+        <Button text="Cancelar" onAction="#cancelar"/>
+    </HBox>
+
+</VBox>
