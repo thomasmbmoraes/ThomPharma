@@ -93,7 +93,7 @@ public class FornecedoresController {
         try {
             Connection conn = Conexao.conectar();
             ResultSet rs = conn.createStatement().executeQuery(
-                "SELECT * FROM fornecedores ORDER BY nome"
+                "SELECT * FROM tb_fornecedores ORDER BY nome"
             );
             while (rs.next()) {
                 Fornecedor f = new Fornecedor();
@@ -182,7 +182,7 @@ public class FornecedoresController {
 
             if (selecionado == null) {
                 // insere novo fornecedor
-                String sql = "INSERT INTO fornecedores (nome, cnpj_cpf, contato, telefone, email, cidade, uf) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO tb_fornecedores (nome, cnpj_cpf, contato, telefone, email, cidade, uf) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, campoNome.getText());
                 stmt.setString(2, campoCnpj.getText());
@@ -196,7 +196,7 @@ public class FornecedoresController {
                 mensagem.setText("Fornecedor cadastrado com sucesso!");
             } else {
                 // atualiza fornecedor existente
-                String sql = "UPDATE fornecedores SET nome=?, cnpj_cpf=?, contato=?, telefone=?, email=?, cidade=?, uf=? WHERE id=?";
+                String sql = "UPDATE tb_fornecedores SET nome=?, cnpj_cpf=?, contato=?, telefone=?, email=?, cidade=?, uf=? WHERE id=?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, campoNome.getText());
                 stmt.setString(2, campoCnpj.getText());
@@ -230,7 +230,7 @@ public class FornecedoresController {
         }
         try {
             Connection conn = Conexao.conectar();
-            PreparedStatement stmt = conn.prepareStatement("DELETE FROM fornecedores WHERE id=?");
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM tb_fornecedores WHERE id=?");
             stmt.setInt(1, selecionado.getId());
             stmt.executeUpdate();
             conn.close();

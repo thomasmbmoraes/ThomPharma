@@ -63,7 +63,7 @@ public class UsuariosController {
         try {
             Connection conn = Conexao.conectar();
             ResultSet rs = conn.createStatement().executeQuery(
-                "SELECT * FROM usuarios ORDER BY usuario"
+                "SELECT * FROM tb_usuarios ORDER BY usuario"
             );
             while (rs.next()) {
                 farmap.modelo.Usuario u = new farmap.modelo.Usuario();
@@ -125,7 +125,7 @@ public class UsuariosController {
 
             if (selecionado == null) {
                 // insere novo usuario
-                String sql = "INSERT INTO usuarios (usuario, nome_completo, senha, admin, ativo) VALUES (?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO tb_usuarios (usuario, nome_completo, senha, admin, ativo) VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, campoUsuario.getText());
                 stmt.setString(2, campoNome.getText());
@@ -137,7 +137,7 @@ public class UsuariosController {
                 mensagem.setText("Usuario cadastrado com sucesso!");
             } else {
                 // atualiza usuario existente
-                String sql = "UPDATE usuarios SET usuario=?, nome_completo=?, admin=?, ativo=? WHERE id=?";
+                String sql = "UPDATE tb_usuarios SET usuario=?, nome_completo=?, admin=?, ativo=? WHERE id=?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, campoUsuario.getText());
                 stmt.setString(2, campoNome.getText());
@@ -168,7 +168,7 @@ public class UsuariosController {
         }
         try {
             Connection conn = Conexao.conectar();
-            PreparedStatement stmt = conn.prepareStatement("DELETE FROM usuarios WHERE id=?");
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM tb_usuarios WHERE id=?");
             stmt.setInt(1, selecionado.getId());
             stmt.executeUpdate();
             conn.close();

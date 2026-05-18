@@ -43,7 +43,7 @@ public class LoginController {
             Connection conn = Conexao.conectar();
 
             // busca o usuario no banco verificando usuario, senha e se esta ativo
-            String sql = "SELECT * FROM usuarios WHERE usuario = ? AND senha = ? AND ativo = true";
+            String sql = "SELECT * FROM tb_usuarios WHERE usuario = ? AND senha = ? AND ativo = true";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, usuario);
             stmt.setString(2, senha);
