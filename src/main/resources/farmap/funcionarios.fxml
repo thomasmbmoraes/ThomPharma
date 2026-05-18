@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="farmap.telas.FuncionariosController">
+
+    <top>
+        <VBox style="-fx-background-color: #2c3e50;">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Label text="Cadastro de Funcionários"
+                   style="-fx-text-fill: white; -fx-font-size: 16px;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <HBox spacing="20">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- lista de funcionarios -->
+            <VBox spacing="10" HBox.hgrow="ALWAYS">
+                <Label text="Funcionários:"/>
+                <TableView fx:id="tabelaFuncionarios" prefHeight="500">
+                    <columns>
+                        <TableColumn fx:id="colNome" text="Nome" prefWidth="200"/>
+                        <TableColumn fx:id="colCargo" text="Cargo" prefWidth="120"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <!-- formulario -->
+            <ScrollPane fitToWidth="true" prefWidth="450">
+                <VBox spacing="10">
+                    <padding>
+                        <Insets top="5" right="10" bottom="5" left="5"/>
+                    </padding>
+
+                    <Label text="Nome:"/>
+                    <TextField fx:id="campoNome"/>
+
+                    <HBox spacing="20">
+                        <VBox spacing="5">
+                            <Label text="Matrícula:"/>
+                            <TextField fx:id="campoMatricula"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Setor:"/>
+                            <TextField fx:id="campoSetor"/>
+                        </VBox>
+                    </HBox>
+
+                    <Label text="Cargo:"/>
+                    <TextField fx:id="campoCargo"/>
+
+                    <HBox spacing="20">
+                        <VBox spacing="5">
+                            <Label text="Nascimento:"/>
+                            <TextField fx:id="campoNascimento" promptText="dd/mm/aaaa"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Sexo:"/>
+                            <ComboBox fx:id="comboSexo" prefWidth="120"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Estado Civil:"/>
+                            <ComboBox fx:id="comboEstadoCivil" prefWidth="150"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="20">
+                        <VBox spacing="5">
+                            <Label text="RG:"/>
+                            <TextField fx:id="campoRg"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="CPF:"/>
+                            <TextField fx:id="campoCpf"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="20">
+                        <VBox spacing="5">
+                            <Label text="CEP:"/>
+                            <TextField fx:id="campoCep" prefWidth="100"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="UF:"/>
+                            <TextField fx:id="campoUf" prefWidth="50"/>
+                        </VBox>
+                    </HBox>
+
+                    <Label text="Endereço:"/>
+                    <TextField fx:id="campoEndereco"/>
+
+                    <HBox spacing="20">
+                        <VBox spacing="5">
+                            <Label text="Bairro:"/>
+                            <TextField fx:id="campoBairro"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Cidade:"/>
+                            <TextField fx:id="campoCidade"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="20">
+                        <VBox spacing="5">
+                            <Label text="Telefone:"/>
+                            <TextField fx:id="campoTelefone"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="2º Telefone:"/>
+                            <TextField fx:id="campoTelefone2"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Celular:"/>
+                            <TextField fx:id="campoCelular"/>
+                        </VBox>
+                    </HBox>
+
+                    <CheckBox fx:id="checkAtivo" text="Ativo" selected="true"/>
+
+                    <Label text="Observações:"/>
+                    <TextArea fx:id="campoObservacoes" prefHeight="80"/>
+
+                    <Label fx:id="mensagem" style="-fx-text-fill: red;"/>
+
+                    <HBox spacing="10">
+                        <Button text="Novo" onAction="#novo"/>
+                        <Button text="Salvar" onAction="#salvar"/>
+                        <Button text="Excluir" onAction="#excluir"/>
+                    </HBox>
+                </VBox>
+            </ScrollPane>
+        </HBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Button text="Fechar" onAction="#fechar"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

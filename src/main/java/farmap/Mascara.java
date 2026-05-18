@@ -180,4 +180,28 @@ public class Mascara {
             }
         });
     }
+    
+    /**
+    * formata o campo como RG: xx.xxx.xxx-x
+    * limita a 12 caracteres incluindo pontos e traco
+    */
+    public static void rg(TextField campo) {
+        campo.textProperty().addListener((obs, antigo, novo) -> {
+            if (novo.length() > 12) {
+                campo.setText(antigo);
+                return;
+            }
+            String digits = novo.replaceAll("[^0-9]", "");
+            StringBuilder formatted = new StringBuilder();
+            for (int i = 0; i < digits.length(); i++) {
+                if (i == 2 || i == 5) formatted.append(".");
+                if (i == 8) formatted.append("-");
+                formatted.append(digits.charAt(i));
+            }
+            if (!formatted.toString().equals(novo)) {
+                campo.setText(formatted.toString());
+                campo.positionCaret(formatted.length());
+            }
+        });
+    }
 }

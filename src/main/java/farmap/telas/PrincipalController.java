@@ -114,7 +114,17 @@ public class PrincipalController {
      */
     @FXML
     private void abrirFerramentas() {
-        System.out.println("Ferramentas - em desenvolvimento");
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/farmap/funcionarios.fxml")
+            );
+            App.getStage().getScene().setRoot(loader.load());
+            App.getStage().setWidth(900);
+            App.getStage().setHeight(650);
+            App.getStage().centerOnScreen();
+        } catch (Exception e) {
+            System.out.println("Erro ao abrir funcionarios: " + e.getMessage());
+        }
     }
 
     /**
