@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="farmap.telas.MateriasPrimasController">
+
+    <top>
+        <VBox style="-fx-background-color: #2c3e50;">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Label text="Cadastro de Matérias-Primas"
+                   style="-fx-text-fill: white; -fx-font-size: 16px;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+
+            <!-- parte superior: lista e formulario de materia prima -->
+            <HBox spacing="20">
+
+                <!-- lista de materias primas -->
+                <VBox spacing="10" HBox.hgrow="ALWAYS">
+                    <Label text="Matérias-Primas:"/>
+                    <TextField fx:id="campoFiltro" promptText="Filtrar..."/>
+                    <TableView fx:id="tabelaMateriasPrimas" prefHeight="200">
+                        <columns>
+                            <TableColumn fx:id="colNome" text="Nome" prefWidth="200"/>
+                            <TableColumn fx:id="colUnidade" text="Un." prefWidth="50"/>
+                            <TableColumn fx:id="colTipo" text="Tipo" prefWidth="80"/>
+                            <TableColumn fx:id="colSaldo" text="Saldo" prefWidth="80"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="10">
+                        <Button text="Nova" onAction="#novo"/>
+                        <Button text="Salvar" onAction="#salvar"/>
+                        <Button text="Excluir" onAction="#excluir"/>
+                    </HBox>
+                </VBox>
+
+                <!-- formulario de materia prima -->
+                <VBox spacing="8" prefWidth="400">
+                    <Label text="Nome:"/>
+                    <TextField fx:id="campoNome"/>
+
+                    <HBox spacing="10">
+                        <VBox spacing="5">
+                            <Label text="Unidade:"/>
+                            <ComboBox fx:id="comboUnidade" prefWidth="80"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Tipo:"/>
+                            <ComboBox fx:id="comboTipo" prefWidth="120"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="10">
+                        <VBox spacing="5">
+                            <Label text="Dose Mín.:"/>
+                            <TextField fx:id="campoDoseMinima" prefWidth="80"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Dose Máx.:"/>
+                            <TextField fx:id="campoDoseMaxima" prefWidth="80"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Volume:"/>
+                            <TextField fx:id="campoVolume" prefWidth="80"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="10">
+                        <VBox spacing="5">
+                            <Label text="Estoque Mín.:"/>
+                            <TextField fx:id="campoEstoqueMinimo" prefWidth="100"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Estoque Crít.:"/>
+                            <TextField fx:id="campoEstoqueCritico" prefWidth="100"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="20">
+                        <CheckBox fx:id="checkRotulo" text="Rótulo"/>
+                        <CheckBox fx:id="checkGeladeira" text="Geladeira"/>
+                        <CheckBox fx:id="checkControlado" text="Controlado"/>
+                    </HBox>
+
+                    <Label text="Observações:"/>
+                    <TextArea fx:id="campoObservacoes" prefHeight="80"/>
+
+                    <Label fx:id="mensagem" style="-fx-text-fill: red;"/>
+                </VBox>
+            </HBox>
+
+            <Separator/>
+
+            <!-- parte inferior: lotes da materia prima selecionada -->
+            <VBox spacing="10">
+                <Label text="Lotes da Matéria-Prima Selecionada:"
+                       style="-fx-font-weight: bold;"/>
+                <TableView fx:id="tabelaLotes" prefHeight="180">
+                    <columns>
+                        <TableColumn fx:id="colLoteNome" text="Lote" prefWidth="100"/>
+                        <TableColumn fx:id="colLoteCusto" text="Custo" prefWidth="80"/>
+                        <TableColumn fx:id="colLoteQuantidade" text="Quantidade" prefWidth="90"/>
+                        <TableColumn fx:id="colLoteSaldo" text="Saldo" prefWidth="80"/>
+                        <TableColumn fx:id="colLoteValidade" text="Validade" prefWidth="90"/>
+                        <TableColumn fx:id="colLoteFornecedor" text="Fornecedor" prefWidth="150"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10">
+                    <Button text="Novo Lote" onAction="#novoLote"/>
+                    <Button text="Salvar Lote" onAction="#salvarLote"/>
+                    <Button text="Excluir Lote" onAction="#excluirLote"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Button text="Fechar" onAction="#fechar"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

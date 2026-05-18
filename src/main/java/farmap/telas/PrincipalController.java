@@ -28,7 +28,17 @@ public class PrincipalController {
      */
     @FXML
     private void abrirMatPrimas() {
-        System.out.println("Mat. Primas - em desenvolvimento");
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/farmap/materias_primas.fxml")
+            );
+            App.getStage().getScene().setRoot(loader.load());
+            App.getStage().setWidth(1000);
+            App.getStage().setHeight(700);
+            App.getStage().centerOnScreen();
+        } catch (Exception e) {
+            System.out.println("Erro ao abrir materias primas: " + e.getMessage());
+        }
     }
 
     /**
