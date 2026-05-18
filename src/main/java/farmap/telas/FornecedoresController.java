@@ -83,6 +83,8 @@ public class FornecedoresController {
 
         // filtra a lista conforme o usuario digita no campo de filtro
         campoFiltro.textProperty().addListener((obs, antigo, novo) -> filtrar(novo));
+        
+        tabelaFornecedores.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     /**

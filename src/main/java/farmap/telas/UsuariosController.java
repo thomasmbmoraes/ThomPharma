@@ -53,6 +53,8 @@ public class UsuariosController {
                 if (novo != null) preencherFormulario(novo);
             }
         );
+        
+        tabelaUsuarios.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     /**

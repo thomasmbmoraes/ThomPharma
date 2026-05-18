@@ -91,6 +91,8 @@ public class ClientesController {
 
         // filtra a lista conforme o usuario digita
         campoFiltro.textProperty().addListener((obs, antigo, novo) -> filtrar(novo));
+        
+        tabelaClientes.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     /**

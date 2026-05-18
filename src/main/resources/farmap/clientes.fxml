@@ -25,7 +25,7 @@
             </padding>
 
             <!-- lista de clientes -->
-            <VBox spacing="10" prefWidth="280">
+            <VBox spacing="10" HBox.hgrow="ALWAYS">
                 <Label text="Clientes:"/>
                 <TextField fx:id="campoFiltro" promptText="Filtrar..."/>
                 <TableView fx:id="tabelaClientes" prefHeight="500">

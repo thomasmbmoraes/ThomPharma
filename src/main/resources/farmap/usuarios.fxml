@@ -25,7 +25,7 @@
             </padding>
 
             <!-- Lista de usuários -->
-            <VBox spacing="10" prefWidth="250">
+            <VBox spacing="10" HBox.hgrow="ALWAYS">
                 <Label text="Usuários:"/>
                 <TableView fx:id="tabelaUsuarios" prefHeight="400">
                     <columns>
