@@ -39,14 +39,14 @@ public class PrincipalController {
     private void abrirClientes() {
         try {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/farmap/fornecedores.fxml")
+                getClass().getResource("/farmap/clientes.fxml")
             );
             App.getStage().getScene().setRoot(loader.load());
-            App.getStage().setWidth(850);
+            App.getStage().setWidth(900);
             App.getStage().setHeight(650);
             App.getStage().centerOnScreen();
         } catch (Exception e) {
-            System.out.println("Erro ao abrir fornecedores: " + e.getMessage());
+            System.out.println("Erro ao abrir clientes: " + e.getMessage());
         }
     }
 

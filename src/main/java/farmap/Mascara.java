@@ -157,4 +157,27 @@ public class Mascara {
             }
         });
     }
+    
+    /**
+    * formata o campo como data: dd/mm/aaaa
+    * limita a 10 caracteres incluindo as barras
+    */
+    public static void data(TextField campo) {
+        campo.textProperty().addListener((obs, antigo, novo) -> {
+            if (novo.length() > 10) {
+                campo.setText(antigo);
+                return;
+            }
+            String digits = novo.replaceAll("[^0-9]", "");
+            StringBuilder formatted = new StringBuilder();
+            for (int i = 0; i < digits.length(); i++) {
+                if (i == 2 || i == 4) formatted.append("/");
+                formatted.append(digits.charAt(i));
+            }
+            if (!formatted.toString().equals(novo)) {
+                campo.setText(formatted.toString());
+                campo.positionCaret(formatted.length());
+            }
+        });
+    }
 }
