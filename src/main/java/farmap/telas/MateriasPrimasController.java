@@ -18,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
 /**
  * controller do cadastro de materias primas
@@ -57,6 +58,12 @@ public class MateriasPrimasController {
     @FXML private CheckBox checkControlado;
     @FXML private TextArea campoObservacoes;
     @FXML private Label mensagem;
+    @FXML private TextField campoCodigo;
+    @FXML private ComboBox<String> comboControlada;
+    @FXML private ComboBox<String> comboClasseAnvisa;
+    @FXML private TextField campoVolumeCaps;
+    @FXML private TextField campoPesoCaps;
+    @FXML private VBox painelCapsula;
 
     // lista completa de materias primas
     private ObservableList<MateriaPrima> listaCompleta = FXCollections.observableArrayList();
@@ -103,6 +110,24 @@ public class MateriasPrimasController {
 
         // filtra conforme o usuario digita
         campoFiltro.textProperty().addListener((obs, antigo, novo) -> filtrar(novo));
+        
+        // preenche combobox de controlada
+        comboControlada.getItems().addAll("Nenhuma", "ANVISA", "Polícia Federal");
+        comboControlada.getSelectionModel().selectFirst();
+
+        // preenche combobox de classe anvisa
+        comboClasseAnvisa.getItems().addAll("C1", "C2", "C3", "C4", "C5");
+        comboClasseAnvisa.getSelectionModel().selectFirst();
+
+        // mostra painel de capsula quando tipo for capsula
+        comboTipo.setOnAction(e -> {
+            boolean isCapsula = "Cápsula".equals(comboTipo.getValue());
+            painelCapsula.setVisible(isCapsula);
+            painelCapsula.setManaged(isCapsula);
+        });
+
+        // gera codigo automatico para nova materia prima
+        campoCodigo.setText(gerarCodigo());
     }
 
     /**
@@ -118,16 +143,21 @@ public class MateriasPrimasController {
             while (rs.next()) {
                 MateriaPrima mp = new MateriaPrima();
                 mp.setId(rs.getInt("id"));
+                mp.setCodigo(rs.getString("codigo"));
                 mp.setNome(rs.getString("nome"));
                 mp.setUnidade(rs.getString("unidade"));
                 mp.setTipo(rs.getString("tipo"));
                 mp.setDoseMinima(rs.getDouble("dose_minima"));
                 mp.setDoseMaxima(rs.getDouble("dose_maxima"));
                 mp.setVolume(rs.getDouble("volume"));
+                mp.setVolumeCaps(rs.getDouble("volume_caps"));
+                mp.setPesoCaps(rs.getDouble("peso_caps"));
                 mp.setSaldo(rs.getDouble("saldo"));
                 mp.setRotulo(rs.getBoolean("rotulo"));
                 mp.setGeladeira(rs.getBoolean("geladeira"));
                 mp.setControlado(rs.getBoolean("controlado"));
+                mp.setControladaTipo(rs.getString("controlada_tipo"));
+                mp.setClasseAnvisa(rs.getString("classe_anvisa"));
                 mp.setObservacoes(rs.getString("observacoes"));
                 mp.setEstoqueMinimo(rs.getDouble("estoque_minimo"));
                 mp.setEstoqueCritico(rs.getDouble("estoque_critico"));
@@ -199,18 +229,33 @@ public class MateriasPrimasController {
      * preenche o formulario com os dados da materia prima selecionada
      */
     private void preencherFormulario(MateriaPrima mp) {
+        campoCodigo.setText(mp.getCodigo() != null ? mp.getCodigo() : "");
         campoNome.setText(mp.getNome());
         comboUnidade.getSelectionModel().select(mp.getUnidade());
         comboTipo.getSelectionModel().select(mp.getTipo());
+        comboControlada.getSelectionModel().select(
+            mp.getControladaTipo() != null ? mp.getControladaTipo() : "Nenhuma"
+        );
+        comboClasseAnvisa.getSelectionModel().select(
+            mp.getClasseAnvisa() != null ? mp.getClasseAnvisa() : "C1"
+        );
         campoDoseMinima.setText(String.valueOf(mp.getDoseMinima()));
         campoDoseMaxima.setText(String.valueOf(mp.getDoseMaxima()));
         campoVolume.setText(String.valueOf(mp.getVolume()));
+        campoVolumeCaps.setText(String.valueOf(mp.getVolumeCaps()));
+        campoPesoCaps.setText(String.valueOf(mp.getPesoCaps()));
         campoEstoqueMinimo.setText(String.valueOf(mp.getEstoqueMinimo()));
         campoEstoqueCritico.setText(String.valueOf(mp.getEstoqueCritico()));
         checkRotulo.setSelected(mp.isRotulo());
         checkGeladeira.setSelected(mp.isGeladeira());
         checkControlado.setSelected(mp.isControlado());
         campoObservacoes.setText(mp.getObservacoes() != null ? mp.getObservacoes() : "");
+
+        // mostra ou oculta painel de capsula
+        boolean isCapsula = "Cápsula".equals(mp.getTipo());
+        painelCapsula.setVisible(isCapsula);
+        painelCapsula.setManaged(isCapsula);
+
         mensagem.setText("");
     }
 
@@ -219,18 +264,25 @@ public class MateriasPrimasController {
      */
     @FXML
     private void novo() {
+        campoCodigo.setText(gerarCodigo());
         campoNome.setText("");
         comboUnidade.getSelectionModel().selectFirst();
         comboTipo.getSelectionModel().selectFirst();
+        comboControlada.getSelectionModel().selectFirst();
+        comboClasseAnvisa.getSelectionModel().selectFirst();
         campoDoseMinima.setText("0");
         campoDoseMaxima.setText("0");
         campoVolume.setText("0");
+        campoVolumeCaps.setText("0");
+        campoPesoCaps.setText("0");
         campoEstoqueMinimo.setText("0");
         campoEstoqueCritico.setText("0");
         checkRotulo.setSelected(false);
         checkGeladeira.setSelected(false);
         checkControlado.setSelected(false);
         campoObservacoes.setText("");
+        painelCapsula.setVisible(false);
+        painelCapsula.setManaged(false);
         mensagem.setText("");
         tabelaMateriasPrimas.getSelectionModel().clearSelection();
         tabelaLotes.getItems().clear();
@@ -250,39 +302,49 @@ public class MateriasPrimasController {
             MateriaPrima selecionada = tabelaMateriasPrimas.getSelectionModel().getSelectedItem();
 
             if (selecionada == null) {
-                String sql = "INSERT INTO tb_materias_primas (nome, unidade, tipo, dose_minima, dose_maxima, volume, rotulo, geladeira, controlado, observacoes, estoque_minimo, estoque_critico) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO tb_materias_primas (codigo, nome, unidade, tipo, dose_minima, dose_maxima, volume, volume_caps, peso_caps, rotulo, geladeira, controlado, controlada_tipo, classe_anvisa, observacoes, estoque_minimo, estoque_critico) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, campoNome.getText());
-                stmt.setString(2, comboUnidade.getValue());
-                stmt.setString(3, comboTipo.getValue());
-                stmt.setDouble(4, Double.parseDouble(campoDoseMinima.getText().isEmpty() ? "0" : campoDoseMinima.getText()));
-                stmt.setDouble(5, Double.parseDouble(campoDoseMaxima.getText().isEmpty() ? "0" : campoDoseMaxima.getText()));
-                stmt.setDouble(6, Double.parseDouble(campoVolume.getText().isEmpty() ? "0" : campoVolume.getText()));
-                stmt.setBoolean(7, checkRotulo.isSelected());
-                stmt.setBoolean(8, checkGeladeira.isSelected());
-                stmt.setBoolean(9, checkControlado.isSelected());
-                stmt.setString(10, campoObservacoes.getText());
-                stmt.setDouble(11, Double.parseDouble(campoEstoqueMinimo.getText().isEmpty() ? "0" : campoEstoqueMinimo.getText()));
-                stmt.setDouble(12, Double.parseDouble(campoEstoqueCritico.getText().isEmpty() ? "0" : campoEstoqueCritico.getText()));
+                stmt.setString(1, campoCodigo.getText());
+                stmt.setString(2, campoNome.getText());
+                stmt.setString(3, comboUnidade.getValue());
+                stmt.setString(4, comboTipo.getValue());
+                stmt.setDouble(5, Double.parseDouble(campoDoseMinima.getText().isEmpty() ? "0" : campoDoseMinima.getText()));
+                stmt.setDouble(6, Double.parseDouble(campoDoseMaxima.getText().isEmpty() ? "0" : campoDoseMaxima.getText()));
+                stmt.setDouble(7, Double.parseDouble(campoVolume.getText().isEmpty() ? "0" : campoVolume.getText()));
+                stmt.setDouble(8, Double.parseDouble(campoVolumeCaps.getText().isEmpty() ? "0" : campoVolumeCaps.getText()));
+                stmt.setDouble(9, Double.parseDouble(campoPesoCaps.getText().isEmpty() ? "0" : campoPesoCaps.getText()));
+                stmt.setBoolean(10, checkRotulo.isSelected());
+                stmt.setBoolean(11, checkGeladeira.isSelected());
+                stmt.setBoolean(12, checkControlado.isSelected());
+                stmt.setString(13, comboControlada.getValue());
+                stmt.setString(14, comboClasseAnvisa.getValue());
+                stmt.setString(15, campoObservacoes.getText());
+                stmt.setDouble(16, Double.parseDouble(campoEstoqueMinimo.getText().isEmpty() ? "0" : campoEstoqueMinimo.getText()));
+                stmt.setDouble(17, Double.parseDouble(campoEstoqueCritico.getText().isEmpty() ? "0" : campoEstoqueCritico.getText()));
                 stmt.executeUpdate();
                 mensagem.setStyle("-fx-text-fill: green;");
                 mensagem.setText("Matéria-prima cadastrada com sucesso!");
             } else {
-                String sql = "UPDATE tb_materias_primas SET nome=?, unidade=?, tipo=?, dose_minima=?, dose_maxima=?, volume=?, rotulo=?, geladeira=?, controlado=?, observacoes=?, estoque_minimo=?, estoque_critico=? WHERE id=?";
+                String sql = "UPDATE tb_materias_primas SET codigo=?, nome=?, unidade=?, tipo=?, dose_minima=?, dose_maxima=?, volume=?, volume_caps=?, peso_caps=?, rotulo=?, geladeira=?, controlado=?, controlada_tipo=?, classe_anvisa=?, observacoes=?, estoque_minimo=?, estoque_critico=? WHERE id=?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, campoNome.getText());
-                stmt.setString(2, comboUnidade.getValue());
-                stmt.setString(3, comboTipo.getValue());
-                stmt.setDouble(4, Double.parseDouble(campoDoseMinima.getText().isEmpty() ? "0" : campoDoseMinima.getText()));
-                stmt.setDouble(5, Double.parseDouble(campoDoseMaxima.getText().isEmpty() ? "0" : campoDoseMaxima.getText()));
-                stmt.setDouble(6, Double.parseDouble(campoVolume.getText().isEmpty() ? "0" : campoVolume.getText()));
-                stmt.setBoolean(7, checkRotulo.isSelected());
-                stmt.setBoolean(8, checkGeladeira.isSelected());
-                stmt.setBoolean(9, checkControlado.isSelected());
-                stmt.setString(10, campoObservacoes.getText());
-                stmt.setDouble(11, Double.parseDouble(campoEstoqueMinimo.getText().isEmpty() ? "0" : campoEstoqueMinimo.getText()));
-                stmt.setDouble(12, Double.parseDouble(campoEstoqueCritico.getText().isEmpty() ? "0" : campoEstoqueCritico.getText()));
-                stmt.setInt(13, selecionada.getId());
+                stmt.setString(1, campoCodigo.getText());
+                stmt.setString(2, campoNome.getText());
+                stmt.setString(3, comboUnidade.getValue());
+                stmt.setString(4, comboTipo.getValue());
+                stmt.setDouble(5, Double.parseDouble(campoDoseMinima.getText().isEmpty() ? "0" : campoDoseMinima.getText()));
+                stmt.setDouble(6, Double.parseDouble(campoDoseMaxima.getText().isEmpty() ? "0" : campoDoseMaxima.getText()));
+                stmt.setDouble(7, Double.parseDouble(campoVolume.getText().isEmpty() ? "0" : campoVolume.getText()));
+                stmt.setDouble(8, Double.parseDouble(campoVolumeCaps.getText().isEmpty() ? "0" : campoVolumeCaps.getText()));
+                stmt.setDouble(9, Double.parseDouble(campoPesoCaps.getText().isEmpty() ? "0" : campoPesoCaps.getText()));
+                stmt.setBoolean(10, checkRotulo.isSelected());
+                stmt.setBoolean(11, checkGeladeira.isSelected());
+                stmt.setBoolean(12, checkControlado.isSelected());
+                stmt.setString(13, comboControlada.getValue());
+                stmt.setString(14, comboClasseAnvisa.getValue());
+                stmt.setString(15, campoObservacoes.getText());
+                stmt.setDouble(16, Double.parseDouble(campoEstoqueMinimo.getText().isEmpty() ? "0" : campoEstoqueMinimo.getText()));
+                stmt.setDouble(17, Double.parseDouble(campoEstoqueCritico.getText().isEmpty() ? "0" : campoEstoqueCritico.getText()));
+                stmt.setInt(18, selecionada.getId());
                 stmt.executeUpdate();
                 mensagem.setStyle("-fx-text-fill: green;");
                 mensagem.setText("Matéria-prima atualizada com sucesso!");
@@ -410,6 +472,30 @@ public class MateriasPrimasController {
             App.getStage().centerOnScreen();
         } catch (Exception e) {
             System.out.println("Erro ao fechar: " + e.getMessage());
+        }
+    }
+    
+    /**
+    * gera um codigo automatico sequencial para a materia prima
+    * formato: MP-0001, MP-0002, etc
+    */
+    private String gerarCodigo() {
+        try {
+            Connection conn = Conexao.conectar();
+            ResultSet rs = conn.createStatement().executeQuery(
+                "SELECT codigo FROM tb_materias_primas ORDER BY id DESC LIMIT 1"
+            );
+            int num = 1;
+            if (rs.next() && rs.getString("codigo") != null) {
+                String ultimo = rs.getString("codigo");
+                if (ultimo.contains("-")) {
+                    num = Integer.parseInt(ultimo.split("-")[1]) + 1;
+                }
+            }
+            conn.close();
+            return String.format("MP-%04d", num);
+        } catch (Exception e) {
+            return "MP-0001";
         }
     }
 }

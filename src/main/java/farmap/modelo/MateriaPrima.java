@@ -47,6 +47,21 @@ public class MateriaPrima {
 
     // quantidade minima para alerta de estoque critico
     private double estoqueCritico;
+    
+    // codigo automatico gerado pelo sistema ex: MP-0001
+    private String codigo;
+
+    // tipo de controlada: Nenhuma, ANVISA, Policia Federal
+    private String controladaTipo;
+
+    // classe anvisa: C1, C2, C3, C4, C5
+    private String classeAnvisa;
+
+    // volume da capsula quando o tipo for capsula
+    private double volumeCaps;
+
+    // peso da capsula quando o tipo for capsula
+    private double pesoCaps;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -89,4 +104,19 @@ public class MateriaPrima {
 
     public double getEstoqueCritico() { return estoqueCritico; }
     public void setEstoqueCritico(double estoqueCritico) { this.estoqueCritico = estoqueCritico; }
+    
+    public String getCodigo() { return codigo; }
+    public void setCodigo(String codigo) { this.codigo = codigo; }
+
+    public String getControladaTipo() { return controladaTipo; }
+    public void setControladaTipo(String controladaTipo) { this.controladaTipo = controladaTipo; }
+
+    public String getClasseAnvisa() { return classeAnvisa; }
+    public void setClasseAnvisa(String classeAnvisa) { this.classeAnvisa = classeAnvisa; }
+
+    public double getVolumeCaps() { return volumeCaps; }
+    public void setVolumeCaps(double volumeCaps) { this.volumeCaps = volumeCaps; }
+
+    public double getPesoCaps() { return pesoCaps; }
+    public void setPesoCaps(double pesoCaps) { this.pesoCaps = pesoCaps; }
 }

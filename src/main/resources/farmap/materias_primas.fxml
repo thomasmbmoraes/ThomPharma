@@ -47,58 +47,87 @@
                 </VBox>
 
                 <!-- formulario de materia prima -->
-                <VBox spacing="8" prefWidth="400">
-                    <Label text="Nome:"/>
-                    <TextField fx:id="campoNome"/>
+		<VBox spacing="8" prefWidth="400">
+		    <Label text="Código:"/>
+		    <TextField fx:id="campoCodigo" editable="false" 
+				style="-fx-background-color: #f0f0f0;"/>
 
-                    <HBox spacing="10">
-                        <VBox spacing="5">
-                            <Label text="Unidade:"/>
-                            <ComboBox fx:id="comboUnidade" prefWidth="80"/>
-                        </VBox>
-                        <VBox spacing="5">
-                            <Label text="Tipo:"/>
-                            <ComboBox fx:id="comboTipo" prefWidth="120"/>
-                        </VBox>
-                    </HBox>
+		    <Label text="Nome:"/>
+		    <TextField fx:id="campoNome"/>
 
-                    <HBox spacing="10">
-                        <VBox spacing="5">
-                            <Label text="Dose Mín.:"/>
-                            <TextField fx:id="campoDoseMinima" prefWidth="80"/>
-                        </VBox>
-                        <VBox spacing="5">
-                            <Label text="Dose Máx.:"/>
-                            <TextField fx:id="campoDoseMaxima" prefWidth="80"/>
-                        </VBox>
-                        <VBox spacing="5">
-                            <Label text="Volume:"/>
-                            <TextField fx:id="campoVolume" prefWidth="80"/>
-                        </VBox>
-                    </HBox>
+		    <HBox spacing="10">
+		        <VBox spacing="5">
+		            <Label text="Unidade:"/>
+		            <ComboBox fx:id="comboUnidade" prefWidth="80"/>
+		        </VBox>
+		        <VBox spacing="5">
+		            <Label text="Tipo:"/>
+		            <ComboBox fx:id="comboTipo" prefWidth="150"/>
+		        </VBox>
+		    </HBox>
 
-                    <HBox spacing="10">
-                        <VBox spacing="5">
-                            <Label text="Estoque Mín.:"/>
-                            <TextField fx:id="campoEstoqueMinimo" prefWidth="100"/>
-                        </VBox>
-                        <VBox spacing="5">
-                            <Label text="Estoque Crít.:"/>
-                            <TextField fx:id="campoEstoqueCritico" prefWidth="100"/>
-                        </VBox>
-                    </HBox>
+		    <HBox spacing="10">
+		        <VBox spacing="5">
+		            <Label text="Controlada:"/>
+		            <ComboBox fx:id="comboControlada" prefWidth="150"/>
+		        </VBox>
+		        <VBox spacing="5">
+		            <Label text="Classe ANVISA:"/>
+		            <ComboBox fx:id="comboClasseAnvisa" prefWidth="100"/>
+		        </VBox>
+		    </HBox>
+	
+		    <HBox spacing="10">
+		        <VBox spacing="5">
+		            <Label text="Dose Mín.:"/>
+		            <TextField fx:id="campoDoseMinima" prefWidth="80"/>
+		        </VBox>
+		        <VBox spacing="5">
+		            <Label text="Dose Máx.:"/>
+		            <TextField fx:id="campoDoseMaxima" prefWidth="80"/>
+		        </VBox>
+		        <VBox spacing="5">
+		            <Label text="Volume:"/>
+		            <TextField fx:id="campoVolume" prefWidth="80"/>
+		        </VBox>
+		    </HBox>
+	
+		    <!-- campos visiveis apenas quando tipo for capsula -->
+		    <VBox fx:id="painelCapsula" spacing="8" visible="false" managed="false">
+		        <HBox spacing="10">
+		            <VBox spacing="5">
+		                <Label text="Vol. Cápsula:"/>
+		                <TextField fx:id="campoVolumeCaps" prefWidth="100"/>
+		            </VBox>
+		            <VBox spacing="5">
+		                <Label text="Peso Cápsula:"/>
+		                <TextField fx:id="campoPesoCaps" prefWidth="100"/>
+		            </VBox>
+		        </HBox>
+		    </VBox>
+		
+		    <HBox spacing="10">
+		        <VBox spacing="5">
+		            <Label text="Estoque Mín.:"/>
+		            <TextField fx:id="campoEstoqueMinimo" prefWidth="100"/>
+		        </VBox>
+		        <VBox spacing="5">
+		            <Label text="Estoque Crít.:"/>
+		            <TextField fx:id="campoEstoqueCritico" prefWidth="100"/>
+		        </VBox>
+		    </HBox>
 
-                    <HBox spacing="20">
-                        <CheckBox fx:id="checkRotulo" text="Rótulo"/>
-                        <CheckBox fx:id="checkGeladeira" text="Geladeira"/>
-                        <CheckBox fx:id="checkControlado" text="Controlado"/>
-                    </HBox>
+		    <HBox spacing="20">
+		        <CheckBox fx:id="checkRotulo" text="Rótulo"/>
+		        <CheckBox fx:id="checkGeladeira" text="Geladeira"/>
+		        <CheckBox fx:id="checkControlado" text="Controlado"/>
+		    </HBox>
 
-                    <Label text="Observações:"/>
-                    <TextArea fx:id="campoObservacoes" prefHeight="80"/>
-
-                    <Label fx:id="mensagem" style="-fx-text-fill: red;"/>
-                </VBox>
+		    <Label text="Observações:"/>
+		    <TextArea fx:id="campoObservacoes" prefHeight="80"/>
+	
+		    <Label fx:id="mensagem" style="-fx-text-fill: red;"/>
+		</VBox>
             </HBox>
 
             <Separator/>
