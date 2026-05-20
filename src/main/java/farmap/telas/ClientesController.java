@@ -54,6 +54,7 @@ public class ClientesController {
     @FXML private ComboBox<String> comboEspecialidade;
     @FXML private VBox painelMedico;
     @FXML private Label mensagem;
+    @FXML private TableColumn<Cliente, String> colEndereco;
 
     // lista completa de clientes carregada do banco
     private ObservableList<Cliente> listaCompleta = FXCollections.observableArrayList();
@@ -69,7 +70,16 @@ public class ClientesController {
     public void initialize() {
         // configura quais atributos aparecem nas colunas
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
+        colTelefone.setCellValueFactory(data -> {
+            Cliente c = data.getValue();
+            if (c.isMedico() && c.getCrm() != null && !c.getCrm().isEmpty()) {
+                return new javafx.beans.property.SimpleStringProperty("CRM: " + c.getCrm());
+            }
+            return new javafx.beans.property.SimpleStringProperty(
+                c.getTelefone() != null ? c.getTelefone() : ""
+            );
+        });
+        colEndereco.setCellValueFactory(new PropertyValueFactory<>("endereco"));
 
         // aplica mascaras nos campos
         Mascara.cpf(campoCpf);

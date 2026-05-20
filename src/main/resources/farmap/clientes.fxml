@@ -28,12 +28,13 @@
             <VBox spacing="10" HBox.hgrow="ALWAYS">
                 <Label text="Clientes:"/>
                 <TextField fx:id="campoFiltro" promptText="Filtrar..."/>
-                <TableView fx:id="tabelaClientes" prefHeight="500">
-                    <columns>
-                        <TableColumn fx:id="colNome" text="Nome" prefWidth="180"/>
-                        <TableColumn fx:id="colTelefone" text="Telefone" prefWidth="90"/>
-                    </columns>
-                </TableView>
+		<TableView fx:id="tabelaClientes" prefHeight="500" prefWidth="280">
+		    <columns>
+		        <TableColumn fx:id="colNome" text="Nome" prefWidth="150"/>
+		        <TableColumn fx:id="colTelefone" text="Tel/CRM" prefWidth="80"/>
+		        <TableColumn fx:id="colEndereco" text="Endereço" prefWidth="150"/>
+		    </columns>
+		</TableView>
             </VBox>
 
             <!-- formulario -->
