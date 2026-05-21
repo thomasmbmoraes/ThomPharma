@@ -1,0 +1,2 @@
+@echo off 
+"C:\Program Files\Apache NetBeans\jdk\bin\java" --module-path "C:\Users\thoma\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13-win.jar" --add-modules javafx.controls,javafx.fxml -cp "target\farmap-1.0-SNAPSHOT.jar;target\deps\*" farmap.App 
