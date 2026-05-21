@@ -37,3 +37,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+pendrive/
+Farmap.bat
+cd
+dir
