@@ -33,9 +33,6 @@ public class PrincipalController {
                 getClass().getResource("/farmap/materias_primas.fxml")
             );
             App.getStage().getScene().setRoot(loader.load());
-            App.getStage().setWidth(1000);
-            App.getStage().setHeight(700);
-            App.getStage().centerOnScreen();
         } catch (Exception e) {
             System.out.println("Erro ao abrir materias primas: " + e.getMessage());
         }
@@ -52,9 +49,6 @@ public class PrincipalController {
                 getClass().getResource("/farmap/clientes.fxml")
             );
             App.getStage().getScene().setRoot(loader.load());
-            App.getStage().setWidth(900);
-            App.getStage().setHeight(650);
-            App.getStage().centerOnScreen();
         } catch (Exception e) {
             System.out.println("Erro ao abrir clientes: " + e.getMessage());
         }
@@ -103,9 +97,6 @@ public class PrincipalController {
                 getClass().getResource("/farmap/usuarios.fxml")
             );
             App.getStage().getScene().setRoot(loader.load());
-            App.getStage().setWidth(700);
-            App.getStage().setHeight(500);
-            App.getStage().centerOnScreen();
         } catch (Exception e) {
             System.out.println("Erro ao abrir usuarios: " + e.getMessage());
         }
@@ -129,9 +120,6 @@ public class PrincipalController {
                 getClass().getResource("/farmap/funcionarios.fxml")
             );
             App.getStage().getScene().setRoot(loader.load());
-            App.getStage().setWidth(900);
-            App.getStage().setHeight(650);
-            App.getStage().centerOnScreen();
         } catch (Exception e) {
             System.out.println("Erro ao abrir funcionarios: " + e.getMessage());
         }
@@ -146,6 +134,7 @@ public class PrincipalController {
         try {
             App.setRoot("login");
             App.getStage().setTitle("Farmap - Login");
+            App.getStage().setMaximized(true);
         } catch (Exception e) {
             System.out.println("Erro ao fazer logoff: " + e.getMessage());
         }

@@ -350,16 +350,6 @@ public class ClientesController {
      */
     @FXML
     private void fechar() {
-        try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/farmap/principal.fxml")
-            );
-            App.getStage().getScene().setRoot(loader.load());
-            App.getStage().setWidth(600);
-            App.getStage().setHeight(400);
-            App.getStage().centerOnScreen();
-        } catch (Exception e) {
-            System.out.println("Erro ao fechar: " + e.getMessage());
-        }
+        App.trocarTela("principal");
     }
 }

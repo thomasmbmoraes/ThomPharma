@@ -189,12 +189,6 @@ public class UsuariosController {
      */
     @FXML
     private void fechar() {
-        try {
-            App.getStage().getScene().setRoot(
-                new javafx.fxml.FXMLLoader(App.class.getResource("principal.fxml")).load()
-            );
-        } catch (Exception e) {
-            System.out.println("Erro ao fechar: " + e.getMessage());
-        }
+        App.trocarTela("principal");
     }
 }

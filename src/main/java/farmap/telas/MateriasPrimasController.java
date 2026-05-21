@@ -467,9 +467,7 @@ public class MateriasPrimasController {
                 getClass().getResource("/farmap/principal.fxml")
             );
             App.getStage().getScene().setRoot(loader.load());
-            App.getStage().setWidth(600);
-            App.getStage().setHeight(400);
-            App.getStage().centerOnScreen();
+            App.getStage().setMaximized(true);
         } catch (Exception e) {
             System.out.println("Erro ao fechar: " + e.getMessage());
         }

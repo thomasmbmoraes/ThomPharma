@@ -18,12 +18,13 @@ public class App extends Application {
     /**
      * metodo de inicializacao do javafx
      * carrega a tela de login ao iniciar
-     */
+     */    
     @Override
     public void start(Stage s) throws IOException {
         stage = s;
-        setRoot("login");
         stage.setTitle("Farmap - Login");
+        stage.setMaximized(true);
+        setRoot("login");
         stage.show();
     }
 
@@ -35,6 +36,7 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
+        stage.setMaximized(true);
     }
 
     /**
@@ -55,5 +57,17 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static void trocarTela(String fxml) {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                App.class.getResource(fxml + ".fxml")
+            );
+            stage.getScene().setRoot(loader.load());
+            stage.setMaximized(true);
+        } catch (Exception e) {
+            System.out.println("Erro ao trocar tela: " + e.getMessage());
+        }
     }
 }

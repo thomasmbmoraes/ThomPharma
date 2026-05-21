@@ -5,23 +5,25 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="10"
-      xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="farmap.telas.LoginController">
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="farmap.telas.LoginController">
 
-    <padding>
-        <Insets top="50" right="50" bottom="50" left="50"/>
-    </padding>
+    <VBox alignment="CENTER" spacing="10" maxWidth="400" maxHeight="300"
+          style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 8;">
 
-    <Label text="Farmap - Sistema de Farmacia de Manipulacao"/>
-    <Label text="Usuário:"/>
-    <TextField fx:id="campoUsuario"/>
-    <Label text="Senha:"/>
-    <PasswordField fx:id="campoSenha"/>
-    <Button text="Entrar" onAction="#fazerLogin"/>
-    <Label fx:id="mensagemErro" style="-fx-text-fill: red;"/>
+        <Label text="Farmap - Sistema de Farmacia de Manipulacao"
+               style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+        <Label text="Usuário:"/>
+        <TextField fx:id="campoUsuario"/>
+        <Label text="Senha:"/>
+        <PasswordField fx:id="campoSenha"/>
+        <Button text="Entrar" onAction="#fazerLogin" maxWidth="Infinity"/>
+        <Label fx:id="mensagemErro" style="-fx-text-fill: red;"/>
 
-</VBox>
+    </VBox>
+
+</StackPane>

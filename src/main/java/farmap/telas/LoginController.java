@@ -33,7 +33,6 @@ public class LoginController {
         String usuario = campoUsuario.getText();
         String senha = campoSenha.getText();
 
-        // valida se os campos foram preenchidos
         if (usuario.isEmpty() || senha.isEmpty()) {
             mensagemErro.setText("Preencha usuario e senha!");
             return;
@@ -41,8 +40,6 @@ public class LoginController {
 
         try {
             Connection conn = Conexao.conectar();
-
-            // busca o usuario no banco verificando usuario, senha e se esta ativo
             String sql = "SELECT * FROM tb_usuarios WHERE usuario = ? AND senha = ? AND ativo = true";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, usuario);
@@ -50,18 +47,16 @@ public class LoginController {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                // login bem sucedido, abre a tela principal passando o nome do usuario
                 String nomeCompleto = rs.getString("nome_completo");
                 conn.close();
 
                 FXMLLoader loader = App.getLoader("principal");
-                Scene scene = new Scene(loader.load(), 600, 400);
+                App.getStage().getScene().setRoot(loader.load());
                 PrincipalController controller = loader.getController();
                 controller.setUsuario(nomeCompleto);
                 App.getStage().setTitle("Farmap");
-                App.getStage().setScene(scene);
+                App.getStage().setMaximized(true);
             } else {
-                // usuario ou senha incorretos
                 mensagemErro.setText("Usuario ou senha incorretos!");
                 conn.close();
             }
