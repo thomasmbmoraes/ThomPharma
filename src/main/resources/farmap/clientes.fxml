@@ -38,7 +38,7 @@
             </VBox>
 
             <!-- formulario -->
-            <ScrollPane fitToWidth="true" prefWidth="450">
+            <ScrollPane fx:id="scrollFormulario" fitToWidth="true" prefWidth="450">
                 <VBox spacing="10">
                     <padding>
                         <Insets top="5" right="10" bottom="5" left="5"/>

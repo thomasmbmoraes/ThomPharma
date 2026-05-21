@@ -55,6 +55,7 @@ public class ClientesController {
     @FXML private VBox painelMedico;
     @FXML private Label mensagem;
     @FXML private TableColumn<Cliente, String> colEndereco;
+    @FXML private javafx.scene.control.ScrollPane scrollFormulario;
 
     // lista completa de clientes carregada do banco
     private ObservableList<Cliente> listaCompleta = FXCollections.observableArrayList();
@@ -185,6 +186,7 @@ public class ClientesController {
      * @param c cliente selecionado
      */
     private void preencherFormulario(Cliente c) {
+        scrollFormulario.setVvalue(0);
         campoNome.setText(c.getNome());
         campoCpf.setText(c.getCpf() != null ? c.getCpf() : "");
         campoTelefone.setText(c.getTelefone() != null ? c.getTelefone() : "");
