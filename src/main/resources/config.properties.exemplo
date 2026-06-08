@@ -1,0 +1,8 @@
+# arquivo de exemplo para configuracao do banco de dados
+# copie este arquivo, renomeie para config.properties
+# e preencha com seus dados reais
+
+db.url.local=jdbc:postgresql://localhost:5432/NOME_DO_BANCO
+db.url.remota=jdbc:postgresql://IP_REMOTO:5432/NOME_DO_BANCO
+db.usuario=USUARIO_DO_BANCO
+db.senha=SENHA_DO_BANCO

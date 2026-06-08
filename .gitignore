@@ -41,3 +41,8 @@ pendrive/
 Farmap.bat
 cd
 dir
+
+
+# arquivo de configuracao com dados sensiveis
+config.properties
+src/main/resources/config.properties
