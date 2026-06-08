@@ -54,7 +54,7 @@ public class LoginController {
                 App.getStage().getScene().setRoot(loader.load());
                 PrincipalController controller = loader.getController();
                 controller.setUsuario(nomeCompleto);
-                App.getStage().setTitle("Farmap");
+                App.getStage().setTitle("ThomPharma");
                 App.getStage().setMaximized(true);
             } else {
                 mensagemErro.setText("Usuario ou senha incorretos!");

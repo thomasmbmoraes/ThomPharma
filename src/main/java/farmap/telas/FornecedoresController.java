@@ -161,8 +161,8 @@ public class FornecedoresController {
         campoContato.setText("");
         campoTelefone.setText("");
         campoEmail.setText("");
-        campoCidade.setText("Ribeirão Preto");
-        campoUf.setText("SP");
+        campoCidade.setText("");
+        campoUf.setText("");
         mensagem.setText("");
         tabelaFornecedores.getSelectionModel().clearSelection();
     }

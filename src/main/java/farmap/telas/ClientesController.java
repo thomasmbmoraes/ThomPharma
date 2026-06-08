@@ -235,8 +235,8 @@ public class ClientesController {
         campoCep.setText("");
         campoEndereco.setText("");
         campoBairro.setText("");
-        campoCidade.setText("Ribeirão Preto");
-        campoUf.setText("SP");
+        campoCidade.setText("");
+        campoUf.setText("");
         campoDesconto.setText("0");
         campoObservacoes.setText("");
         checkMedico.setSelected(false);

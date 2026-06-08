@@ -22,7 +22,7 @@ public class App extends Application {
     @Override
     public void start(Stage s) throws IOException {
         stage = s;
-        stage.setTitle("Farmap - Login");
+        stage.setTitle("ThomPharma - Login");
         stage.setMaximized(true);
         setRoot("login");
         stage.show();
