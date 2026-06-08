@@ -28,13 +28,13 @@
             <VBox spacing="10" HBox.hgrow="ALWAYS">
                 <Label text="Clientes:"/>
                 <TextField fx:id="campoFiltro" promptText="Filtrar..."/>
-		<TableView fx:id="tabelaClientes" prefHeight="500" prefWidth="280">
-		    <columns>
-		        <TableColumn fx:id="colNome" text="Nome" prefWidth="150"/>
-		        <TableColumn fx:id="colTelefone" text="Tel/CRM" prefWidth="80"/>
-		        <TableColumn fx:id="colEndereco" text="Endereço" prefWidth="150"/>
-		    </columns>
-		</TableView>
+                <TableView fx:id="tabelaClientes" prefHeight="500" prefWidth="320">
+                    <columns>
+                        <TableColumn fx:id="colNome" text="Nome" prefWidth="160"/>
+                        <TableColumn fx:id="colCpf" text="CPF" prefWidth="110"/>
+                        <TableColumn fx:id="colTelefone" text="Telefone" prefWidth="110"/>
+                    </columns>
+                </TableView>
             </VBox>
 
             <!-- formulario -->
@@ -99,16 +99,6 @@
                             <TextField fx:id="campoCidade"/>
                         </VBox>
                     </HBox>
-
-                    <CheckBox fx:id="checkMedico" text="É Médico/Dentista/Veterinário"
-                              onAction="#toggleMedico"/>
-
-                    <VBox fx:id="painelMedico" spacing="10" visible="false" managed="false">
-                        <Label text="CRM/CRO/CRV:"/>
-                        <TextField fx:id="campoCrm"/>
-                        <Label text="Especialidade:"/>
-                        <ComboBox fx:id="comboEspecialidade" prefWidth="300"/>
-                    </VBox>
 
                     <Label text="Observações:"/>
                     <TextArea fx:id="campoObservacoes" prefHeight="80"/>

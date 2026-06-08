@@ -10,26 +10,26 @@ import java.sql.ResultSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 
 /**
  * controller do cadastro de clientes
  * permite listar, filtrar, cadastrar, editar e excluir clientes
- * suporta cadastro de medicos com crm e especialidade
+ * prescritores (medicos, dentistas, etc) sao gerenciados em modulo separado
  */
 public class ClientesController {
 
     // componentes da tabela de listagem
     @FXML private TableView<Cliente> tabelaClientes;
     @FXML private TableColumn<Cliente, String> colNome;
+    @FXML private TableColumn<Cliente, String> colCpf;
     @FXML private TableColumn<Cliente, String> colTelefone;
 
     // campo de filtro para busca por nome
@@ -49,19 +49,11 @@ public class ClientesController {
     @FXML private TextField campoCidade;
     @FXML private TextField campoUf;
     @FXML private TextArea campoObservacoes;
-    @FXML private CheckBox checkMedico;
-    @FXML private TextField campoCrm;
-    @FXML private ComboBox<String> comboEspecialidade;
-    @FXML private VBox painelMedico;
     @FXML private Label mensagem;
-    @FXML private TableColumn<Cliente, String> colEndereco;
     @FXML private javafx.scene.control.ScrollPane scrollFormulario;
 
     // lista completa de clientes carregada do banco
     private ObservableList<Cliente> listaCompleta = FXCollections.observableArrayList();
-
-    // lista de ids das especialidades para salvar no banco
-    private ObservableList<Integer> idsEspecialidades = FXCollections.observableArrayList();
 
     /**
      * executado automaticamente ao carregar a tela
@@ -71,16 +63,9 @@ public class ClientesController {
     public void initialize() {
         // configura quais atributos aparecem nas colunas
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colTelefone.setCellValueFactory(data -> {
-            Cliente c = data.getValue();
-            if (c.isMedico() && c.getCrm() != null && !c.getCrm().isEmpty()) {
-                return new javafx.beans.property.SimpleStringProperty("CRM: " + c.getCrm());
-            }
-            return new javafx.beans.property.SimpleStringProperty(
-                c.getTelefone() != null ? c.getTelefone() : ""
-            );
-        });
-        colEndereco.setCellValueFactory(new PropertyValueFactory<>("endereco"));
+        colCpf.setCellValueFactory(new PropertyValueFactory<>("cpf"));
+        colTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
+        tabelaClientes.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // aplica mascaras nos campos
         Mascara.cpf(campoCpf);
@@ -90,7 +75,6 @@ public class ClientesController {
         Mascara.soNumeros(campoDesconto, 5);
         Mascara.data(campoNascimento);
 
-        carregarEspecialidades();
         carregarClientes();
 
         // ao selecionar um cliente na tabela, preenche o formulario
@@ -102,28 +86,6 @@ public class ClientesController {
 
         // filtra a lista conforme o usuario digita
         campoFiltro.textProperty().addListener((obs, antigo, novo) -> filtrar(novo));
-        
-        tabelaClientes.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-    }
-
-    /**
-     * carrega as especialidades medicas do banco para o combobox
-     */
-    private void carregarEspecialidades() {
-        try {
-            Connection conn = Conexao.conectar();
-            ResultSet rs = conn.createStatement().executeQuery(
-                "SELECT * FROM tb_especialidades_medicas ORDER BY id"
-            );
-            while (rs.next()) {
-                idsEspecialidades.add(rs.getInt("id"));
-                comboEspecialidade.getItems().add(rs.getString("nome"));
-            }
-            conn.close();
-            comboEspecialidade.getSelectionModel().selectFirst();
-        } catch (Exception e) {
-            System.out.println("Erro ao carregar especialidades: " + e.getMessage());
-        }
     }
 
     /**
@@ -150,9 +112,6 @@ public class ClientesController {
                 c.setCidade(rs.getString("cidade"));
                 c.setUf(rs.getString("uf"));
                 c.setDesconto(rs.getDouble("desconto"));
-                c.setMedico(rs.getBoolean("medico"));
-                c.setCrm(rs.getString("crm"));
-                c.setIdEspecialidade(rs.getInt("id_especialidade"));
                 c.setObservacoes(rs.getString("observacoes"));
                 listaCompleta.add(c);
             }
@@ -199,27 +158,7 @@ public class ClientesController {
         campoUf.setText(c.getUf() != null ? c.getUf() : "");
         campoDesconto.setText(String.valueOf(c.getDesconto()));
         campoObservacoes.setText(c.getObservacoes() != null ? c.getObservacoes() : "");
-        checkMedico.setSelected(c.isMedico());
-        campoCrm.setText(c.getCrm() != null ? c.getCrm() : "");
-
-        // seleciona a especialidade correta no combobox
-        int idx = idsEspecialidades.indexOf(c.getIdEspecialidade());
-        if (idx >= 0) comboEspecialidade.getSelectionModel().select(idx);
-
-        // mostra ou oculta o painel de medico
-        painelMedico.setVisible(c.isMedico());
-        painelMedico.setManaged(c.isMedico());
         mensagem.setText("");
-    }
-
-    /**
-     * mostra ou oculta o painel de medico conforme o checkbox
-     */
-    @FXML
-    private void toggleMedico() {
-        boolean medico = checkMedico.isSelected();
-        painelMedico.setVisible(medico);
-        painelMedico.setManaged(medico);
     }
 
     /**
@@ -239,11 +178,6 @@ public class ClientesController {
         campoUf.setText("");
         campoDesconto.setText("0");
         campoObservacoes.setText("");
-        checkMedico.setSelected(false);
-        campoCrm.setText("");
-        comboEspecialidade.getSelectionModel().selectFirst();
-        painelMedico.setVisible(false);
-        painelMedico.setManaged(false);
         mensagem.setText("");
         tabelaClientes.getSelectionModel().clearSelection();
     }
@@ -251,27 +185,45 @@ public class ClientesController {
     /**
      * salva o cliente no banco
      * insere novo se nenhum estiver selecionado, atualiza se estiver
+     * padroniza o nome antes de salvar e verifica CPF duplicado
      */
     @FXML
     private void salvar() {
         if (campoNome.getText().isEmpty()) {
+            mensagem.setStyle("-fx-text-fill: red;");
             mensagem.setText("Preencha o nome!");
             return;
         }
+
+        String nome = padronizarNome(campoNome.getText());
+
         try {
             Connection conn = Conexao.conectar();
             Cliente selecionado = tabelaClientes.getSelectionModel().getSelectedItem();
 
-            // pega o id da especialidade selecionada no combobox
-            int idEspecialidade = idsEspecialidades.get(
-                comboEspecialidade.getSelectionModel().getSelectedIndex()
-            );
+            // verifica se ja existe outro cliente com o mesmo CPF
+            if (!campoCpf.getText().isEmpty()) {
+                PreparedStatement check = conn.prepareStatement(
+                    "SELECT id FROM tb_clientes WHERE cpf = ?"
+                );
+                check.setString(1, campoCpf.getText());
+                ResultSet rs = check.executeQuery();
+                if (rs.next()) {
+                    int idEncontrado = rs.getInt("id");
+                    if (selecionado == null || idEncontrado != selecionado.getId()) {
+                        mensagem.setStyle("-fx-text-fill: red;");
+                        mensagem.setText("Já existe um cliente com este CPF!");
+                        conn.close();
+                        return;
+                    }
+                }
+            }
 
             if (selecionado == null) {
                 // insere novo cliente
-                String sql = "INSERT INTO tb_clientes (nome, cpf, telefone, telefone2, email, cep, endereco, bairro, cidade, uf, desconto, medico, crm, id_especialidade, observacoes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO tb_clientes (nome, cpf, telefone, telefone2, email, cep, endereco, bairro, cidade, uf, desconto, observacoes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, campoNome.getText());
+                stmt.setString(1, nome);
                 stmt.setString(2, campoCpf.getText());
                 stmt.setString(3, campoTelefone.getText());
                 stmt.setString(4, campoTelefone2.getText());
@@ -282,18 +234,15 @@ public class ClientesController {
                 stmt.setString(9, campoCidade.getText());
                 stmt.setString(10, campoUf.getText());
                 stmt.setDouble(11, Double.parseDouble(campoDesconto.getText().isEmpty() ? "0" : campoDesconto.getText()));
-                stmt.setBoolean(12, checkMedico.isSelected());
-                stmt.setString(13, campoCrm.getText());
-                stmt.setInt(14, idEspecialidade);
-                stmt.setString(15, campoObservacoes.getText());
+                stmt.setString(12, campoObservacoes.getText());
                 stmt.executeUpdate();
                 mensagem.setStyle("-fx-text-fill: green;");
                 mensagem.setText("Cliente cadastrado com sucesso!");
             } else {
                 // atualiza cliente existente
-                String sql = "UPDATE tb_clientes SET nome=?, cpf=?, telefone=?, telefone2=?, email=?, cep=?, endereco=?, bairro=?, cidade=?, uf=?, desconto=?, medico=?, crm=?, id_especialidade=?, observacoes=? WHERE id=?";
+                String sql = "UPDATE tb_clientes SET nome=?, cpf=?, telefone=?, telefone2=?, email=?, cep=?, endereco=?, bairro=?, cidade=?, uf=?, desconto=?, observacoes=? WHERE id=?";
                 PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, campoNome.getText());
+                stmt.setString(1, nome);
                 stmt.setString(2, campoCpf.getText());
                 stmt.setString(3, campoTelefone.getText());
                 stmt.setString(4, campoTelefone2.getText());
@@ -304,17 +253,15 @@ public class ClientesController {
                 stmt.setString(9, campoCidade.getText());
                 stmt.setString(10, campoUf.getText());
                 stmt.setDouble(11, Double.parseDouble(campoDesconto.getText().isEmpty() ? "0" : campoDesconto.getText()));
-                stmt.setBoolean(12, checkMedico.isSelected());
-                stmt.setString(13, campoCrm.getText());
-                stmt.setInt(14, idEspecialidade);
-                stmt.setString(15, campoObservacoes.getText());
-                stmt.setInt(16, selecionado.getId());
+                stmt.setString(12, campoObservacoes.getText());
+                stmt.setInt(13, selecionado.getId());
                 stmt.executeUpdate();
                 mensagem.setStyle("-fx-text-fill: green;");
                 mensagem.setText("Cliente atualizado com sucesso!");
             }
             conn.close();
             carregarClientes();
+            campoNome.setText(nome);
         } catch (Exception e) {
             mensagem.setStyle("-fx-text-fill: red;");
             mensagem.setText("Erro ao salvar: " + e.getMessage());
@@ -323,6 +270,7 @@ public class ClientesController {
 
     /**
      * exclui o cliente selecionado na tabela
+     * exibe dialogo de confirmacao antes de executar a exclusao
      */
     @FXML
     private void excluir() {
@@ -331,6 +279,12 @@ public class ClientesController {
             mensagem.setText("Selecione um cliente!");
             return;
         }
+        // pede confirmacao antes de excluir para evitar exclusoes acidentais
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar exclusão");
+        alert.setHeaderText(null);
+        alert.setContentText("Deseja excluir o cliente \"" + selecionado.getNome() + "\"?");
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
         try {
             Connection conn = Conexao.conectar();
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM tb_clientes WHERE id=?");
@@ -340,11 +294,35 @@ public class ClientesController {
             carregarClientes();
             novo();
             mensagem.setStyle("-fx-text-fill: green;");
-            mensagem.setText("Cliente excluido com sucesso!");
+            mensagem.setText("Cliente excluído com sucesso!");
         } catch (Exception e) {
             mensagem.setStyle("-fx-text-fill: red;");
             mensagem.setText("Erro ao excluir: " + e.getMessage());
         }
+    }
+
+    /**
+     * padroniza o nome capitalizando a primeira letra de cada palavra
+     * artigos e preposicoes sao mantidos em minusculo
+     * @param nome nome digitado pelo usuario
+     * @return nome formatado
+     */
+    private String padronizarNome(String nome) {
+        if (nome == null || nome.isEmpty()) return nome;
+        String[] artigos = {"de", "da", "do", "das", "dos", "e", "a", "o", "em", "por"};
+        java.util.Set<String> artigosSet = new java.util.HashSet<>(java.util.Arrays.asList(artigos));
+        String[] palavras = nome.trim().toLowerCase().split("\\s+");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < palavras.length; i++) {
+            if (i > 0) sb.append(" ");
+            if (i > 0 && artigosSet.contains(palavras[i])) {
+                sb.append(palavras[i]);
+            } else if (!palavras[i].isEmpty()) {
+                sb.append(Character.toUpperCase(palavras[i].charAt(0)));
+                sb.append(palavras[i].substring(1));
+            }
+        }
+        return sb.toString();
     }
 
     /**

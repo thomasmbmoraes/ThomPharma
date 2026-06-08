@@ -62,7 +62,7 @@ public class App extends Application {
     public static void trocarTela(String fxml) {
         try {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                App.class.getResource(fxml + ".fxml")
+                App.class.getResource("/thompharma/" + fxml + ".fxml")
             );
             stage.getScene().setRoot(loader.load());
             stage.setMaximized(true);

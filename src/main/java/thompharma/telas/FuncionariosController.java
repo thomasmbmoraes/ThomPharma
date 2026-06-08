@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -278,6 +280,7 @@ public class FuncionariosController {
 
     /**
      * exclui o funcionario selecionado na tabela
+     * exibe dialogo de confirmacao antes de executar a exclusao
      */
     @FXML
     private void excluir() {
@@ -286,6 +289,12 @@ public class FuncionariosController {
             mensagem.setText("Selecione um funcionário!");
             return;
         }
+        // pede confirmacao antes de excluir para evitar exclusoes acidentais
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar exclusão");
+        alert.setHeaderText(null);
+        alert.setContentText("Deseja excluir o funcionário \"" + selecionado.getNome() + "\"?");
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
         try {
             Connection conn = Conexao.conectar();
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM tb_funcionarios WHERE id=?");

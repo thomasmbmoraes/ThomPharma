@@ -30,7 +30,7 @@ public class PrincipalController {
     private void abrirMatPrimas() {
         try {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/farmap/materias_primas.fxml")
+                getClass().getResource("/thompharma/materias_primas.fxml")
             );
             App.getStage().getScene().setRoot(loader.load());
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class PrincipalController {
     private void abrirClientes() {
         try {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/farmap/clientes.fxml")
+                getClass().getResource("/thompharma/clientes.fxml")
             );
             App.getStage().getScene().setRoot(loader.load());
         } catch (Exception e) {
@@ -79,11 +79,18 @@ public class PrincipalController {
     }
 
     /**
-     * abre o modulo de vendas balcao
+     * abre o modulo de cadastro de prescritores
      */
     @FXML
-    private void abrirVendas() {
-        System.out.println("Vendas - em desenvolvimento");
+    private void abrirPrescritores() {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/thompharma/prescritores.fxml")
+            );
+            App.getStage().getScene().setRoot(loader.load());
+        } catch (Exception e) {
+            System.out.println("Erro ao abrir prescritores: " + e.getMessage());
+        }
     }
 
     /**
@@ -94,7 +101,7 @@ public class PrincipalController {
     private void abrirTabelas() {
         try {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/farmap/usuarios.fxml")
+                getClass().getResource("/thompharma/usuarios.fxml")
             );
             App.getStage().getScene().setRoot(loader.load());
         } catch (Exception e) {
@@ -117,7 +124,7 @@ public class PrincipalController {
     private void abrirFerramentas() {
         try {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/farmap/funcionarios.fxml")
+                getClass().getResource("/thompharma/funcionarios.fxml")
             );
             App.getStage().getScene().setRoot(loader.load());
         } catch (Exception e) {

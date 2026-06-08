@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
@@ -222,6 +224,7 @@ public class FornecedoresController {
 
     /**
      * exclui o fornecedor selecionado na tabela
+     * exibe dialogo de confirmacao antes de executar a exclusao
      */
     @FXML
     private void excluir() {
@@ -230,6 +233,12 @@ public class FornecedoresController {
             mensagem.setText("Selecione um fornecedor!");
             return;
         }
+        // pede confirmacao antes de excluir para evitar exclusoes acidentais
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar exclusão");
+        alert.setHeaderText(null);
+        alert.setContentText("Deseja excluir o fornecedor \"" + selecionado.getNome() + "\"?");
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
         try {
             Connection conn = Conexao.conectar();
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM tb_fornecedores WHERE id=?");

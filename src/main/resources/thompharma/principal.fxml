@@ -16,7 +16,7 @@
             <padding>
                 <Insets top="10" right="20" bottom="10" left="20"/>
             </padding>
-            <Label fx:id="labelUsuario" 
+            <Label fx:id="labelUsuario"
                    text="ThomPharma - Sistema de Farmacia de Manipulacao"
                    style="-fx-text-fill: white; -fx-font-size: 16px;"/>
         </VBox>
@@ -30,12 +30,12 @@
             <HBox spacing="15" alignment="CENTER">
                 <Button text="Mat. Primas" prefWidth="150" prefHeight="60" onAction="#abrirMatPrimas"/>
                 <Button text="Clientes" prefWidth="150" prefHeight="60" onAction="#abrirClientes"/>
-                <Button text="Receitas" prefWidth="150" prefHeight="60" onAction="#abrirReceitas"/>
+                <Button text="Prescritores" prefWidth="150" prefHeight="60" onAction="#abrirPrescritores"/>
             </HBox>
             <HBox spacing="15" alignment="CENTER">
+                <Button text="Receitas" prefWidth="150" prefHeight="60" onAction="#abrirReceitas"/>
                 <Button text="Orçamentos" prefWidth="150" prefHeight="60" onAction="#abrirOrcamentos"/>
                 <Button text="Pedidos" prefWidth="150" prefHeight="60" onAction="#abrirPedidos"/>
-                <Button text="Vendas" prefWidth="150" prefHeight="60" onAction="#abrirVendas"/>
             </HBox>
             <HBox spacing="15" alignment="CENTER">
                 <Button text="Tabelas" prefWidth="150" prefHeight="60" onAction="#abrirTabelas"/>

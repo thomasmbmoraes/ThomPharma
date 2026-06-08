@@ -10,10 +10,13 @@ import java.sql.ResultSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -128,6 +131,25 @@ public class MateriasPrimasController {
 
         // gera codigo automatico para nova materia prima
         campoCodigo.setText(gerarCodigo());
+
+        // colore as linhas da tabela conforme o nivel de estoque
+        // vermelho: saldo igual ou abaixo do estoque critico
+        // amarelo: saldo igual ou abaixo do estoque minimo
+        tabelaMateriasPrimas.setRowFactory(tv -> new TableRow<MateriaPrima>() {
+            @Override
+            protected void updateItem(MateriaPrima mp, boolean empty) {
+                super.updateItem(mp, empty);
+                if (mp == null || empty) {
+                    setStyle("");
+                } else if (mp.getEstoqueCritico() > 0 && mp.getSaldo() <= mp.getEstoqueCritico()) {
+                    setStyle("-fx-background-color: #ffcccc;");
+                } else if (mp.getEstoqueMinimo() > 0 && mp.getSaldo() <= mp.getEstoqueMinimo()) {
+                    setStyle("-fx-background-color: #fff3cd;");
+                } else {
+                    setStyle("");
+                }
+            }
+        });
     }
 
     /**
@@ -359,6 +381,7 @@ public class MateriasPrimasController {
 
     /**
      * exclui a materia prima selecionada
+     * exibe dialogo de confirmacao antes de executar a exclusao
      */
     @FXML
     private void excluir() {
@@ -367,6 +390,12 @@ public class MateriasPrimasController {
             mensagem.setText("Selecione uma matéria-prima!");
             return;
         }
+        // pede confirmacao antes de excluir para evitar exclusoes acidentais
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar exclusão");
+        alert.setHeaderText(null);
+        alert.setContentText("Deseja excluir a matéria-prima \"" + selecionada.getNome() + "\"?\nTodos os lotes associados também serão excluídos.");
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
         try {
             Connection conn = Conexao.conectar();
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM tb_materias_primas WHERE id=?");
@@ -405,7 +434,7 @@ public class MateriasPrimasController {
         }
         try {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/farmap/lote_dialog.fxml")
+                getClass().getResource("/thompharma/lote_dialog.fxml")
             );
             javafx.scene.Parent root = loader.load();
             LoteDialogController controller = loader.getController();
@@ -433,6 +462,7 @@ public class MateriasPrimasController {
 
     /**
      * exclui o lote selecionado
+     * exibe dialogo de confirmacao antes de executar a exclusao
      */
     @FXML
     private void excluirLote() {
@@ -441,6 +471,12 @@ public class MateriasPrimasController {
             mensagem.setText("Selecione um lote!");
             return;
         }
+        // pede confirmacao antes de excluir para evitar exclusoes acidentais
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar exclusão");
+        alert.setHeaderText(null);
+        alert.setContentText("Deseja excluir o lote \"" + selecionado.getNomeLote() + "\"?");
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
         try {
             Connection conn = Conexao.conectar();
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM tb_lotes WHERE id=?");
@@ -464,7 +500,7 @@ public class MateriasPrimasController {
     private void fechar() {
         try {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/farmap/principal.fxml")
+                getClass().getResource("/thompharma/principal.fxml")
             );
             App.getStage().getScene().setRoot(loader.load());
             App.getStage().setMaximized(true);
