@@ -186,8 +186,8 @@ public class FuncionariosController {
         campoCep.setText("");
         campoEndereco.setText("");
         campoBairro.setText("");
-        campoCidade.setText("Ribeirão Preto");
-        campoUf.setText("SP");
+        campoCidade.setText("");
+        campoUf.setText("");
         campoTelefone.setText("");
         campoTelefone2.setText("");
         campoCelular.setText("");
