@@ -1,4 +1,4 @@
-package farmap;
+package thompharma;
 
 import javafx.scene.control.TextField;
 

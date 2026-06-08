@@ -1,4 +1,4 @@
-package farmap.modelo;
+package thompharma.modelo;
 
 /**
  * modelo que representa uma materia prima da farmacia

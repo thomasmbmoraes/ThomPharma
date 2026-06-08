@@ -1,7 +1,7 @@
-package farmap.telas;
+package thompharma.telas;
 
-import farmap.App;
-import farmap.Conexao;
+import thompharma.App;
+import thompharma.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

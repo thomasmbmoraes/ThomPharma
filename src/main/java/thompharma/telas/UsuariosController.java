@@ -1,7 +1,7 @@
-package farmap.telas;
+package thompharma.telas;
 
-import farmap.App;
-import farmap.Conexao;
+import thompharma.App;
+import thompharma.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,9 +24,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class UsuariosController {
 
     // componentes da tabela de listagem
-    @FXML private TableView<farmap.modelo.Usuario> tabelaUsuarios;
-    @FXML private TableColumn<farmap.modelo.Usuario, String> colUsuario;
-    @FXML private TableColumn<farmap.modelo.Usuario, String> colNome;
+    @FXML private TableView<thompharma.modelo.Usuario> tabelaUsuarios;
+    @FXML private TableColumn<thompharma.modelo.Usuario, String> colUsuario;
+    @FXML private TableColumn<thompharma.modelo.Usuario, String> colNome;
 
     // campos do formulario
     @FXML private TextField campoUsuario;
@@ -61,14 +61,14 @@ public class UsuariosController {
      * busca todos os usuarios do banco e exibe na tabela
      */
     private void carregarUsuarios() {
-        ObservableList<farmap.modelo.Usuario> lista = FXCollections.observableArrayList();
+        ObservableList<thompharma.modelo.Usuario> lista = FXCollections.observableArrayList();
         try {
             Connection conn = Conexao.conectar();
             ResultSet rs = conn.createStatement().executeQuery(
                 "SELECT * FROM tb_usuarios ORDER BY usuario"
             );
             while (rs.next()) {
-                farmap.modelo.Usuario u = new farmap.modelo.Usuario();
+                thompharma.modelo.Usuario u = new thompharma.modelo.Usuario();
                 u.setId(rs.getInt("id"));
                 u.setUsuario(rs.getString("usuario"));
                 u.setNomeCompleto(rs.getString("nome_completo"));
@@ -87,7 +87,7 @@ public class UsuariosController {
      * preenche o formulario com os dados do usuario selecionado na tabela
      * @param u usuario selecionado
      */
-    private void preencherFormulario(farmap.modelo.Usuario u) {
+    private void preencherFormulario(thompharma.modelo.Usuario u) {
         campoUsuario.setText(u.getUsuario());
         campoNome.setText(u.getNomeCompleto());
         campoSenha.setText("");
@@ -123,7 +123,7 @@ public class UsuariosController {
         }
         try {
             Connection conn = Conexao.conectar();
-            farmap.modelo.Usuario selecionado = tabelaUsuarios.getSelectionModel().getSelectedItem();
+            thompharma.modelo.Usuario selecionado = tabelaUsuarios.getSelectionModel().getSelectedItem();
 
             if (selecionado == null) {
                 // insere novo usuario
@@ -163,7 +163,7 @@ public class UsuariosController {
      */
     @FXML
     private void excluir() {
-        farmap.modelo.Usuario selecionado = tabelaUsuarios.getSelectionModel().getSelectedItem();
+        thompharma.modelo.Usuario selecionado = tabelaUsuarios.getSelectionModel().getSelectedItem();
         if (selecionado == null) {
             mensagem.setText("Selecione um usuario!");
             return;

@@ -9,7 +9,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="farmap.telas.PrincipalController">
+            fx:controller="thompharma.telas.PrincipalController">
 
     <top>
         <VBox style="-fx-background-color: #2c3e50;">
@@ -17,7 +17,7 @@
                 <Insets top="10" right="20" bottom="10" left="20"/>
             </padding>
             <Label fx:id="labelUsuario" 
-                   text="Farmap - Sistema de Farmacia de Manipulacao"
+                   text="ThomPharma - Sistema de Farmacia de Manipulacao"
                    style="-fx-text-fill: white; -fx-font-size: 16px;"/>
         </VBox>
     </top>

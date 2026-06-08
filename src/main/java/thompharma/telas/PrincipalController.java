@@ -1,6 +1,6 @@
-package farmap.telas;
+package thompharma.telas;
 
-import farmap.App;
+import thompharma.App;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -20,7 +20,7 @@ public class PrincipalController {
      * @param nomeUsuario nome completo do usuario logado
      */
     public void setUsuario(String nomeUsuario) {
-        labelUsuario.setText("Farmap - Bem vindo, " + nomeUsuario);
+        labelUsuario.setText("ThomPharma - Bem vindo, " + nomeUsuario);
     }
 
     /**

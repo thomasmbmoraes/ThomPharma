@@ -1,9 +1,9 @@
-package farmap.telas;
+package thompharma.telas;
 
-import farmap.App;
-import farmap.Conexao;
-import farmap.modelo.Lote;
-import farmap.modelo.MateriaPrima;
+import thompharma.App;
+import thompharma.Conexao;
+import thompharma.modelo.Lote;
+import thompharma.modelo.MateriaPrima;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

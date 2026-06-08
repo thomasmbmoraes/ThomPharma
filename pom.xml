@@ -41,7 +41,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.4</version>
                 <configuration>
-                    <mainClass>farmap.App</mainClass>
+                    <mainClass>thompharma.App</mainClass>
                 </configuration>
                 <executions>
                     <execution>

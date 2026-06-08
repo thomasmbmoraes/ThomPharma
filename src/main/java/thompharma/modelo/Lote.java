@@ -1,4 +1,4 @@
-package farmap.modelo;
+package thompharma.modelo;
 
 /**
  * modelo que representa um lote de materia prima

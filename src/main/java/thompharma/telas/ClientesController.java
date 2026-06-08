@@ -1,9 +1,9 @@
-package farmap.telas;
+package thompharma.telas;
 
-import farmap.App;
-import farmap.Conexao;
-import farmap.Mascara;
-import farmap.modelo.Cliente;
+import thompharma.App;
+import thompharma.Conexao;
+import thompharma.Mascara;
+import thompharma.modelo.Cliente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

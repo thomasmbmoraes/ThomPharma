@@ -6,7 +6,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="farmap.telas.FuncionariosController">
+            fx:controller="thompharma.telas.FuncionariosController">
 
     <top>
         <VBox style="-fx-background-color: #2c3e50;">

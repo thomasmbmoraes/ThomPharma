@@ -6,7 +6,7 @@
 
 <VBox spacing="10" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="farmap.telas.LoteDialogController">
+      fx:controller="thompharma.telas.LoteDialogController">
 
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>

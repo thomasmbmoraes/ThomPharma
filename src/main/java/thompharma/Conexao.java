@@ -1,4 +1,4 @@
-package farmap;
+package thompharma;
 
 import java.io.InputStream;
 import java.sql.Connection;

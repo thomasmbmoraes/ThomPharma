@@ -1,4 +1,4 @@
-package farmap;
+package thompharma;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -33,7 +33,7 @@ public class App extends Application {
      * @param fxml nome do arquivo fxml sem extensao
      */
     public static void setRoot(String fxml) throws IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/thompharma/" + fxml + ".fxml"));
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setMaximized(true);
@@ -45,7 +45,7 @@ public class App extends Application {
      * @param fxml nome do arquivo fxml sem extensao
      */
     public static FXMLLoader getLoader(String fxml) throws IOException {
-        return new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        return new FXMLLoader(App.class.getResource("/thompharma/" + fxml + ".fxml"));
     }
 
     /**
