@@ -59,7 +59,14 @@ public class PrincipalController {
      */
     @FXML
     private void abrirReceitas() {
-        System.out.println("Receitas - em desenvolvimento");
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/thompharma/receitas.fxml")
+            );
+            App.getStage().getScene().setRoot(loader.load());
+        } catch (Exception e) {
+            System.out.println("Erro ao abrir receitas: " + e.getMessage());
+        }
     }
 
     /**
