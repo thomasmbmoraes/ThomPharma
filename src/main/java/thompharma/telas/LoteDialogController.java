@@ -2,7 +2,6 @@ package thompharma.telas;
 
 import thompharma.Conexao;
 import thompharma.Mascara;
-import thompharma.modelo.Fornecedor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +16,7 @@ import javafx.stage.Stage;
 /**
  * controller da janela de dialogo para cadastro de lotes
  * aberto a partir da tela de materias primas
+ * ao salvar, recalcula automaticamente o saldo da materia prima no banco
  */
 public class LoteDialogController {
 
@@ -25,6 +25,7 @@ public class LoteDialogController {
     @FXML private TextField campoQuantidade;
     @FXML private TextField campoCusto;
     @FXML private TextField campoFator;
+    @FXML private TextField campoFator2;
     @FXML private TextField campoDensidade;
     @FXML private TextField campoEnderecoUso;
     @FXML private TextField campoEnderecoEstoque;
@@ -37,16 +38,18 @@ public class LoteDialogController {
     // lista de ids dos fornecedores para salvar no banco
     private ObservableList<Integer> idsFornecedores = FXCollections.observableArrayList();
 
-    // referencia ao controller pai para atualizar a tabela de lotes
+    // referencia ao controller pai para atualizar as tabelas apos salvar
     private MateriasPrimasController controllerPai;
 
     /**
-     * executado automaticamente ao carregar a tela
+     * executado automaticamente ao carregar o dialogo
      */
     @FXML
     public void initialize() {
         Mascara.data(campoValidade);
+        // valores padrao: fator 1 e fator 2 iniciam em 1 (neutro)
         campoFator.setText("1");
+        campoFator2.setText("1");
         campoDensidade.setText("1.0");
         carregarFornecedores();
     }
@@ -54,6 +57,8 @@ public class LoteDialogController {
     /**
      * define o id da materia prima e o controller pai
      * chamado pelo MateriasPrimasController ao abrir o dialogo
+     * @param idMateriaPrima id da materia prima selecionada
+     * @param controllerPai referencia ao controller que abriu este dialogo
      */
     public void setDados(int idMateriaPrima, MateriasPrimasController controllerPai) {
         this.idMateriaPrima = idMateriaPrima;
@@ -83,7 +88,8 @@ public class LoteDialogController {
     }
 
     /**
-     * salva o lote no banco e fecha o dialogo
+     * salva o lote no banco e atualiza o saldo da materia prima automaticamente
+     * o saldo da MP e recalculado como a soma dos saldos de todos os seus lotes
      */
     @FXML
     private void salvar() {
@@ -109,27 +115,33 @@ public class LoteDialogController {
                 validadeFormatada = partes[2] + "-" + partes[1] + "-" + partes[0];
             }
 
-            String sql = "INSERT INTO tb_lotes (id_materia_prima, nome_lote, custo, fator, quantidade, saldo, densidade, validade, endereco_uso, endereco_estoque, id_fornecedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            // insere o lote no banco
+            String sql = "INSERT INTO tb_lotes (id_materia_prima, nome_lote, custo, fator, fator2, quantidade, saldo, densidade, validade, endereco_uso, endereco_estoque, id_fornecedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, idMateriaPrima);
             stmt.setString(2, campoNomeLote.getText());
             stmt.setDouble(3, Double.parseDouble(campoCusto.getText().isEmpty() ? "0" : campoCusto.getText()));
-            stmt.setInt(4, Integer.parseInt(campoFator.getText().isEmpty() ? "1" : campoFator.getText()));
-            stmt.setDouble(5, quantidade);
+            stmt.setDouble(4, Double.parseDouble(campoFator.getText().isEmpty() ? "1" : campoFator.getText()));
+            stmt.setDouble(5, Double.parseDouble(campoFator2.getText().isEmpty() ? "1" : campoFator2.getText()));
             stmt.setDouble(6, quantidade);
-            stmt.setDouble(7, Double.parseDouble(campoDensidade.getText().isEmpty() ? "1" : campoDensidade.getText()));
+            stmt.setDouble(7, quantidade);
+            stmt.setDouble(8, Double.parseDouble(campoDensidade.getText().isEmpty() ? "1" : campoDensidade.getText()));
             if (validadeFormatada.isEmpty()) {
-                stmt.setNull(8, java.sql.Types.DATE);
+                stmt.setNull(9, java.sql.Types.DATE);
             } else {
-                stmt.setDate(8, java.sql.Date.valueOf(validadeFormatada));
+                stmt.setDate(9, java.sql.Date.valueOf(validadeFormatada));
             }
-            stmt.setString(9, campoEnderecoUso.getText());
-            stmt.setString(10, campoEnderecoEstoque.getText());
-            stmt.setInt(11, idFornecedor);
+            stmt.setString(10, campoEnderecoUso.getText());
+            stmt.setString(11, campoEnderecoEstoque.getText());
+            stmt.setInt(12, idFornecedor);
             stmt.executeUpdate();
+
+            // recalcula o saldo da materia prima como soma dos saldos de todos os seus lotes
+            atualizarSaldoMateriaPrima(conn, idMateriaPrima);
+
             conn.close();
 
-            // atualiza a tabela de lotes no controller pai
+            // avisa o controller pai para recarregar os lotes e a lista de MPs
             if (controllerPai != null) {
                 controllerPai.atualizarLotes(idMateriaPrima);
             }
@@ -140,6 +152,22 @@ public class LoteDialogController {
         } catch (Exception e) {
             mensagem.setText("Erro ao salvar: " + e.getMessage());
         }
+    }
+
+    /**
+     * atualiza o saldo da materia prima como a soma dos saldos de todos os seus lotes
+     * @param conn conexao aberta com o banco
+     * @param idMateriaPrima id da materia prima a atualizar
+     */
+    private void atualizarSaldoMateriaPrima(Connection conn, int idMateriaPrima) throws Exception {
+        PreparedStatement upd = conn.prepareStatement(
+            "UPDATE tb_materias_primas SET saldo = " +
+            "(SELECT COALESCE(SUM(saldo), 0) FROM tb_lotes WHERE id_materia_prima = ?) " +
+            "WHERE id = ?"
+        );
+        upd.setInt(1, idMateriaPrima);
+        upd.setInt(2, idMateriaPrima);
+        upd.executeUpdate();
     }
 
     /**

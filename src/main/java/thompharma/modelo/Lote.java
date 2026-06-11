@@ -19,8 +19,11 @@ public class Lote {
     // custo por unidade deste lote
     private double custo;
 
-    // fator de conversao da unidade
-    private int fator;
+    // fator 1: usado no calculo do preco de venda
+    private double fator;
+
+    // fator 2: fator de correcao por marca ou procedencia do lote
+    private double fator2;
 
     // quantidade total comprada neste lote
     private double quantidade;
@@ -58,8 +61,11 @@ public class Lote {
     public double getCusto() { return custo; }
     public void setCusto(double custo) { this.custo = custo; }
 
-    public int getFator() { return fator; }
-    public void setFator(int fator) { this.fator = fator; }
+    public double getFator() { return fator; }
+    public void setFator(double fator) { this.fator = fator; }
+
+    public double getFator2() { return fator2; }
+    public void setFator2(double fator2) { this.fator2 = fator2; }
 
     public double getQuantidade() { return quantidade; }
     public void setQuantidade(double quantidade) { this.quantidade = quantidade; }

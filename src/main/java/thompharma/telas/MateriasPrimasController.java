@@ -15,6 +15,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -25,8 +26,9 @@ import javafx.scene.layout.VBox;
 
 /**
  * controller do cadastro de materias primas
- * gerencia materias primas e seus lotes
- * ao selecionar uma materia prima, exibe seus lotes na tabela inferior
+ * gerencia materias primas, seus lotes e sinonimos
+ * o saldo da materia prima e calculado automaticamente como a soma dos saldos dos lotes
+ * paineis de campos extras aparecem dinamicamente conforme o tipo selecionado
  */
 public class MateriasPrimasController {
 
@@ -48,12 +50,12 @@ public class MateriasPrimasController {
 
     // campos do formulario de materia prima
     @FXML private TextField campoFiltro;
+    @FXML private TextField campoCodigo;
     @FXML private TextField campoNome;
     @FXML private ComboBox<String> comboUnidade;
     @FXML private ComboBox<String> comboTipo;
-    @FXML private TextField campoDoseMinima;
-    @FXML private TextField campoDoseMaxima;
-    @FXML private TextField campoVolume;
+    @FXML private ComboBox<String> comboControlada;
+    @FXML private ComboBox<String> comboClasseAnvisa;
     @FXML private TextField campoEstoqueMinimo;
     @FXML private TextField campoEstoqueCritico;
     @FXML private CheckBox checkRotulo;
@@ -61,14 +63,27 @@ public class MateriasPrimasController {
     @FXML private CheckBox checkControlado;
     @FXML private TextArea campoObservacoes;
     @FXML private Label mensagem;
-    @FXML private TextField campoCodigo;
-    @FXML private ComboBox<String> comboControlada;
-    @FXML private ComboBox<String> comboClasseAnvisa;
+
+    // paineis dinamicos exibidos conforme o tipo selecionado
+    @FXML private VBox painelSolidoLiquido; // dose minima e maxima (Solido e Liquido)
+    @FXML private VBox painelCapsula;       // volume e peso da capsula
+    @FXML private VBox painelEmbalagem;     // volume da embalagem
+
+    // campos dentro dos paineis dinamicos
+    @FXML private TextField campoDoseMinima;
+    @FXML private TextField campoDoseMaxima;
+    @FXML private TextField campoVolume;
     @FXML private TextField campoVolumeCaps;
     @FXML private TextField campoPesoCaps;
-    @FXML private VBox painelCapsula;
 
-    // lista completa de materias primas
+    // componentes da secao de sinonimos
+    @FXML private ListView<String> listaSinonimos;
+    @FXML private TextField campoSinonimo;
+
+    // lista de ids dos sinonimos para exclusao pelo indice selecionado
+    private ObservableList<Integer> idsSinonimos = FXCollections.observableArrayList();
+
+    // lista completa de materias primas em memoria para filtragem local
     private ObservableList<MateriaPrima> listaCompleta = FXCollections.observableArrayList();
 
     /**
@@ -92,44 +107,42 @@ public class MateriasPrimasController {
         colLoteFornecedor.setCellValueFactory(new PropertyValueFactory<>("nomeFornecedor"));
         tabelaLotes.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // preenche comboboxes
+        // preenche comboboxes com todas as opcoes
         comboUnidade.getItems().addAll("mg", "g", "kg", "ml", "l", "un");
         comboUnidade.getSelectionModel().selectFirst();
 
-        comboTipo.getItems().addAll("Sólido", "Líquido", "Excipiente", "Outro");
+        // tipos completos: cada tipo controla quais campos extras aparecem no formulario
+        comboTipo.getItems().addAll(
+            "Sólido", "Líquido", "Cápsula", "Embalagem",
+            "Homeopatia", "Floral", "Balcão", "Excipiente", "Outro"
+        );
         comboTipo.getSelectionModel().selectFirst();
+
+        comboControlada.getItems().addAll("Nenhuma", "ANVISA", "Polícia Federal");
+        comboControlada.getSelectionModel().selectFirst();
+
+        comboClasseAnvisa.getItems().addAll("C1", "C2", "C3", "C4", "C5");
+        comboClasseAnvisa.getSelectionModel().selectFirst();
 
         carregarMateriasPrimas();
 
-        // ao selecionar uma materia prima, carrega seus lotes
+        // ao selecionar uma materia prima, carrega seus lotes e sinonimos
         tabelaMateriasPrimas.getSelectionModel().selectedItemProperty().addListener(
             (obs, antigo, novo) -> {
                 if (novo != null) {
                     preencherFormulario(novo);
                     carregarLotes(novo.getId());
+                    carregarSinonimos(novo.getId());
                 }
             }
         );
 
         // filtra conforme o usuario digita
         campoFiltro.textProperty().addListener((obs, antigo, novo) -> filtrar(novo));
-        
-        // preenche combobox de controlada
-        comboControlada.getItems().addAll("Nenhuma", "ANVISA", "Polícia Federal");
-        comboControlada.getSelectionModel().selectFirst();
 
-        // preenche combobox de classe anvisa
-        comboClasseAnvisa.getItems().addAll("C1", "C2", "C3", "C4", "C5");
-        comboClasseAnvisa.getSelectionModel().selectFirst();
+        // atualiza os paineis dinamicos ao mudar o tipo
+        comboTipo.setOnAction(e -> atualizarPainelTipo(comboTipo.getValue()));
 
-        // mostra painel de capsula quando tipo for capsula
-        comboTipo.setOnAction(e -> {
-            boolean isCapsula = "Cápsula".equals(comboTipo.getValue());
-            painelCapsula.setVisible(isCapsula);
-            painelCapsula.setManaged(isCapsula);
-        });
-
-        // gera codigo automatico para nova materia prima
         campoCodigo.setText(gerarCodigo());
 
         // colore as linhas da tabela conforme o nivel de estoque
@@ -150,6 +163,27 @@ public class MateriasPrimasController {
                 }
             }
         });
+    }
+
+    /**
+     * exibe ou oculta os paineis de campos extras de acordo com o tipo selecionado
+     * solido e liquido mostram dose minima e maxima
+     * capsula mostra volume e peso da capsula
+     * embalagem mostra apenas o volume
+     * os demais tipos nao tem campos extras
+     * @param tipo tipo selecionado no combobox
+     */
+    private void atualizarPainelTipo(String tipo) {
+        boolean isSolidoLiquido = "Sólido".equals(tipo) || "Líquido".equals(tipo);
+        boolean isCapsula = "Cápsula".equals(tipo);
+        boolean isEmbalagem = "Embalagem".equals(tipo);
+
+        painelSolidoLiquido.setVisible(isSolidoLiquido);
+        painelSolidoLiquido.setManaged(isSolidoLiquido);
+        painelCapsula.setVisible(isCapsula);
+        painelCapsula.setManaged(isCapsula);
+        painelEmbalagem.setVisible(isEmbalagem);
+        painelEmbalagem.setManaged(isEmbalagem);
     }
 
     /**
@@ -194,7 +228,7 @@ public class MateriasPrimasController {
 
     /**
      * carrega os lotes da materia prima selecionada
-     * @param idMateriaPrima id da materia prima selecionada
+     * @param idMateriaPrima id da materia prima
      */
     private void carregarLotes(int idMateriaPrima) {
         ObservableList<Lote> listaLotes = FXCollections.observableArrayList();
@@ -212,7 +246,8 @@ public class MateriasPrimasController {
                 l.setIdMateriaPrima(rs.getInt("id_materia_prima"));
                 l.setNomeLote(rs.getString("nome_lote"));
                 l.setCusto(rs.getDouble("custo"));
-                l.setFator(rs.getInt("fator"));
+                l.setFator(rs.getDouble("fator"));
+                l.setFator2(rs.getDouble("fator2"));
                 l.setQuantidade(rs.getDouble("quantidade"));
                 l.setSaldo(rs.getDouble("saldo"));
                 l.setDensidade(rs.getDouble("densidade"));
@@ -228,6 +263,84 @@ public class MateriasPrimasController {
             System.out.println("Erro ao carregar lotes: " + e.getMessage());
         }
         tabelaLotes.setItems(listaLotes);
+    }
+
+    /**
+     * carrega os sinonimos da materia prima selecionada
+     * @param idMateriaPrima id da materia prima
+     */
+    private void carregarSinonimos(int idMateriaPrima) {
+        listaSinonimos.getItems().clear();
+        idsSinonimos.clear();
+        try {
+            Connection conn = Conexao.conectar();
+            PreparedStatement stmt = conn.prepareStatement(
+                "SELECT id, sinonimo FROM tb_sinonimos WHERE id_materia_prima = ? ORDER BY sinonimo"
+            );
+            stmt.setInt(1, idMateriaPrima);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                idsSinonimos.add(rs.getInt("id"));
+                listaSinonimos.getItems().add(rs.getString("sinonimo"));
+            }
+            conn.close();
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar sinonimos: " + e.getMessage());
+        }
+    }
+
+    /**
+     * adiciona um sinonimo para a materia prima selecionada
+     */
+    @FXML
+    private void adicionarSinonimo() {
+        MateriaPrima selecionada = tabelaMateriasPrimas.getSelectionModel().getSelectedItem();
+        if (selecionada == null) {
+            mensagem.setStyle("-fx-text-fill: red;");
+            mensagem.setText("Selecione uma matéria-prima primeiro!");
+            return;
+        }
+        String sinonimo = campoSinonimo.getText().trim();
+        if (sinonimo.isEmpty()) return;
+        try {
+            Connection conn = Conexao.conectar();
+            PreparedStatement stmt = conn.prepareStatement(
+                "INSERT INTO tb_sinonimos (id_materia_prima, sinonimo) VALUES (?, ?)"
+            );
+            stmt.setInt(1, selecionada.getId());
+            stmt.setString(2, sinonimo);
+            stmt.executeUpdate();
+            conn.close();
+            campoSinonimo.setText("");
+            carregarSinonimos(selecionada.getId());
+        } catch (Exception e) {
+            mensagem.setStyle("-fx-text-fill: red;");
+            mensagem.setText("Erro ao adicionar sinônimo: " + e.getMessage());
+        }
+    }
+
+    /**
+     * remove o sinonimo selecionado na lista
+     */
+    @FXML
+    private void removerSinonimo() {
+        int idx = listaSinonimos.getSelectionModel().getSelectedIndex();
+        if (idx < 0) return;
+        int idSinonimo = idsSinonimos.get(idx);
+        try {
+            Connection conn = Conexao.conectar();
+            PreparedStatement stmt = conn.prepareStatement(
+                "DELETE FROM tb_sinonimos WHERE id = ?"
+            );
+            stmt.setInt(1, idSinonimo);
+            stmt.executeUpdate();
+            conn.close();
+            MateriaPrima selecionada = tabelaMateriasPrimas.getSelectionModel().getSelectedItem();
+            if (selecionada != null) carregarSinonimos(selecionada.getId());
+        } catch (Exception e) {
+            mensagem.setStyle("-fx-text-fill: red;");
+            mensagem.setText("Erro ao remover sinônimo: " + e.getMessage());
+        }
     }
 
     /**
@@ -273,10 +386,8 @@ public class MateriasPrimasController {
         checkControlado.setSelected(mp.isControlado());
         campoObservacoes.setText(mp.getObservacoes() != null ? mp.getObservacoes() : "");
 
-        // mostra ou oculta painel de capsula
-        boolean isCapsula = "Cápsula".equals(mp.getTipo());
-        painelCapsula.setVisible(isCapsula);
-        painelCapsula.setManaged(isCapsula);
+        // atualiza os paineis dinamicos conforme o tipo
+        atualizarPainelTipo(mp.getTipo());
 
         mensagem.setText("");
     }
@@ -303,8 +414,11 @@ public class MateriasPrimasController {
         checkGeladeira.setSelected(false);
         checkControlado.setSelected(false);
         campoObservacoes.setText("");
-        painelCapsula.setVisible(false);
-        painelCapsula.setManaged(false);
+        campoSinonimo.setText("");
+        listaSinonimos.getItems().clear();
+        idsSinonimos.clear();
+        // esconde todos os paineis dinamicos ao criar nova MP
+        atualizarPainelTipo(comboTipo.getValue());
         mensagem.setText("");
         tabelaMateriasPrimas.getSelectionModel().clearSelection();
         tabelaLotes.getItems().clear();
@@ -316,6 +430,7 @@ public class MateriasPrimasController {
     @FXML
     private void salvar() {
         if (campoNome.getText().isEmpty()) {
+            mensagem.setStyle("-fx-text-fill: red;");
             mensagem.setText("Preencha o nome!");
             return;
         }
@@ -394,7 +509,7 @@ public class MateriasPrimasController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmar exclusão");
         alert.setHeaderText(null);
-        alert.setContentText("Deseja excluir a matéria-prima \"" + selecionada.getNome() + "\"?\nTodos os lotes associados também serão excluídos.");
+        alert.setContentText("Deseja excluir a matéria-prima \"" + selecionada.getNome() + "\"?\nTodos os lotes e sinônimos associados também serão excluídos.");
         if (alert.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
         try {
             Connection conn = Conexao.conectar();
@@ -423,8 +538,8 @@ public class MateriasPrimasController {
     }
 
     /**
-    * abre a janela de dialogo para cadastrar um novo lote
-    */
+     * abre a janela de dialogo para cadastrar um novo lote
+     */
     @FXML
     private void salvarLote() {
         MateriaPrima selecionada = tabelaMateriasPrimas.getSelectionModel().getSelectedItem();
@@ -439,7 +554,7 @@ public class MateriasPrimasController {
             javafx.scene.Parent root = loader.load();
             LoteDialogController controller = loader.getController();
             controller.setDados(selecionada.getId(), this);
- 
+
             javafx.stage.Stage dialog = new javafx.stage.Stage();
             dialog.setTitle("Novo Lote - " + selecionada.getNome());
             dialog.setScene(new javafx.scene.Scene(root));
@@ -447,21 +562,22 @@ public class MateriasPrimasController {
             dialog.showAndWait();
         } catch (Exception e) {
             mensagem.setText("Erro ao abrir dialogo: " + e.getMessage());
-            System.out.println(e.getMessage());
         }
     }
 
     /**
-    * atualiza a tabela de lotes apos salvar um novo lote
-    * chamado pelo LoteDialogController apos salvar
-    * @param idMateriaPrima id da materia prima cujos lotes devem ser atualizados
-    */
+     * atualiza a tabela de lotes e a lista de MPs apos salvar um novo lote
+     * chamado pelo LoteDialogController apos salvar com sucesso
+     * @param idMateriaPrima id da materia prima cujos lotes devem ser atualizados
+     */
     public void atualizarLotes(int idMateriaPrima) {
         carregarLotes(idMateriaPrima);
+        // recarrega a lista de MPs para refletir o saldo recalculado
+        carregarMateriasPrimas();
     }
 
     /**
-     * exclui o lote selecionado
+     * exclui o lote selecionado e recalcula o saldo da materia prima
      * exibe dialogo de confirmacao antes de executar a exclusao
      */
     @FXML
@@ -482,9 +598,23 @@ public class MateriasPrimasController {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM tb_lotes WHERE id=?");
             stmt.setInt(1, selecionado.getId());
             stmt.executeUpdate();
+
+            // recalcula o saldo da materia prima apos remover o lote
+            int idMP = selecionado.getIdMateriaPrima();
+            PreparedStatement upd = conn.prepareStatement(
+                "UPDATE tb_materias_primas SET saldo = " +
+                "(SELECT COALESCE(SUM(saldo), 0) FROM tb_lotes WHERE id_materia_prima = ?) " +
+                "WHERE id = ?"
+            );
+            upd.setInt(1, idMP);
+            upd.setInt(2, idMP);
+            upd.executeUpdate();
+
             conn.close();
+
             MateriaPrima mp = tabelaMateriasPrimas.getSelectionModel().getSelectedItem();
             if (mp != null) carregarLotes(mp.getId());
+            carregarMateriasPrimas();
             mensagem.setStyle("-fx-text-fill: green;");
             mensagem.setText("Lote excluído com sucesso!");
         } catch (Exception e) {
@@ -508,11 +638,11 @@ public class MateriasPrimasController {
             System.out.println("Erro ao fechar: " + e.getMessage());
         }
     }
-    
+
     /**
-    * gera um codigo automatico sequencial para a materia prima
-    * formato: MP-0001, MP-0002, etc
-    */
+     * gera um codigo automatico sequencial para a materia prima
+     * formato: MP-0001, MP-0002, etc
+     */
     private String gerarCodigo() {
         try {
             Connection conn = Conexao.conectar();

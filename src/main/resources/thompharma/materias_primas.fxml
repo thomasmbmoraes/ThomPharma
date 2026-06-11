@@ -31,7 +31,7 @@
                 <VBox spacing="10" HBox.hgrow="ALWAYS">
                     <Label text="Matérias-Primas:"/>
                     <TextField fx:id="campoFiltro" promptText="Filtrar..."/>
-                    <TableView fx:id="tabelaMateriasPrimas" prefHeight="200">
+                    <TableView fx:id="tabelaMateriasPrimas" prefHeight="250">
                         <columns>
                             <TableColumn fx:id="colNome" text="Nome" prefWidth="200"/>
                             <TableColumn fx:id="colUnidade" text="Un." prefWidth="50"/>
@@ -46,88 +46,109 @@
                     </HBox>
                 </VBox>
 
-                <!-- formulario de materia prima -->
-		<VBox spacing="8" prefWidth="400">
-		    <Label text="Código:"/>
-		    <TextField fx:id="campoCodigo" editable="false" 
-				style="-fx-background-color: #f0f0f0;"/>
+                <!-- formulario de materia prima com scroll -->
+                <ScrollPane fitToWidth="true" prefWidth="420" prefHeight="320">
+                    <VBox spacing="8">
+                        <padding>
+                            <Insets top="5" right="10" bottom="5" left="5"/>
+                        </padding>
 
-		    <Label text="Nome:"/>
-		    <TextField fx:id="campoNome"/>
+                        <Label text="Código:"/>
+                        <TextField fx:id="campoCodigo" editable="false"
+                                   style="-fx-background-color: #f0f0f0;"/>
 
-		    <HBox spacing="10">
-		        <VBox spacing="5">
-		            <Label text="Unidade:"/>
-		            <ComboBox fx:id="comboUnidade" prefWidth="80"/>
-		        </VBox>
-		        <VBox spacing="5">
-		            <Label text="Tipo:"/>
-		            <ComboBox fx:id="comboTipo" prefWidth="150"/>
-		        </VBox>
-		    </HBox>
+                        <Label text="Nome:"/>
+                        <TextField fx:id="campoNome"/>
 
-		    <HBox spacing="10">
-		        <VBox spacing="5">
-		            <Label text="Controlada:"/>
-		            <ComboBox fx:id="comboControlada" prefWidth="150"/>
-		        </VBox>
-		        <VBox spacing="5">
-		            <Label text="Classe ANVISA:"/>
-		            <ComboBox fx:id="comboClasseAnvisa" prefWidth="100"/>
-		        </VBox>
-		    </HBox>
-	
-		    <HBox spacing="10">
-		        <VBox spacing="5">
-		            <Label text="Dose Mín.:"/>
-		            <TextField fx:id="campoDoseMinima" prefWidth="80"/>
-		        </VBox>
-		        <VBox spacing="5">
-		            <Label text="Dose Máx.:"/>
-		            <TextField fx:id="campoDoseMaxima" prefWidth="80"/>
-		        </VBox>
-		        <VBox spacing="5">
-		            <Label text="Volume:"/>
-		            <TextField fx:id="campoVolume" prefWidth="80"/>
-		        </VBox>
-		    </HBox>
-	
-		    <!-- campos visiveis apenas quando tipo for capsula -->
-		    <VBox fx:id="painelCapsula" spacing="8" visible="false" managed="false">
-		        <HBox spacing="10">
-		            <VBox spacing="5">
-		                <Label text="Vol. Cápsula:"/>
-		                <TextField fx:id="campoVolumeCaps" prefWidth="100"/>
-		            </VBox>
-		            <VBox spacing="5">
-		                <Label text="Peso Cápsula:"/>
-		                <TextField fx:id="campoPesoCaps" prefWidth="100"/>
-		            </VBox>
-		        </HBox>
-		    </VBox>
-		
-		    <HBox spacing="10">
-		        <VBox spacing="5">
-		            <Label text="Estoque Mín.:"/>
-		            <TextField fx:id="campoEstoqueMinimo" prefWidth="100"/>
-		        </VBox>
-		        <VBox spacing="5">
-		            <Label text="Estoque Crít.:"/>
-		            <TextField fx:id="campoEstoqueCritico" prefWidth="100"/>
-		        </VBox>
-		    </HBox>
+                        <HBox spacing="10">
+                            <VBox spacing="5">
+                                <Label text="Unidade:"/>
+                                <ComboBox fx:id="comboUnidade" prefWidth="80"/>
+                            </VBox>
+                            <VBox spacing="5">
+                                <Label text="Tipo:"/>
+                                <ComboBox fx:id="comboTipo" prefWidth="150"/>
+                            </VBox>
+                        </HBox>
 
-		    <HBox spacing="20">
-		        <CheckBox fx:id="checkRotulo" text="Rótulo"/>
-		        <CheckBox fx:id="checkGeladeira" text="Geladeira"/>
-		        <CheckBox fx:id="checkControlado" text="Controlado"/>
-		    </HBox>
+                        <HBox spacing="10">
+                            <VBox spacing="5">
+                                <Label text="Controlada:"/>
+                                <ComboBox fx:id="comboControlada" prefWidth="150"/>
+                            </VBox>
+                            <VBox spacing="5">
+                                <Label text="Classe ANVISA:"/>
+                                <ComboBox fx:id="comboClasseAnvisa" prefWidth="100"/>
+                            </VBox>
+                        </HBox>
 
-		    <Label text="Observações:"/>
-		    <TextArea fx:id="campoObservacoes" prefHeight="80"/>
-	
-		    <Label fx:id="mensagem" style="-fx-text-fill: red;"/>
-		</VBox>
+                        <!-- painel dinamico: Solido e Liquido -->
+                        <VBox fx:id="painelSolidoLiquido" spacing="8" visible="false" managed="false">
+                            <HBox spacing="10">
+                                <VBox spacing="5">
+                                    <Label text="Dose Mín.:"/>
+                                    <TextField fx:id="campoDoseMinima" prefWidth="90"/>
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label text="Dose Máx.:"/>
+                                    <TextField fx:id="campoDoseMaxima" prefWidth="90"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- painel dinamico: Capsula -->
+                        <VBox fx:id="painelCapsula" spacing="8" visible="false" managed="false">
+                            <HBox spacing="10">
+                                <VBox spacing="5">
+                                    <Label text="Vol. Cápsula:"/>
+                                    <TextField fx:id="campoVolumeCaps" prefWidth="100"/>
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label text="Peso Cápsula:"/>
+                                    <TextField fx:id="campoPesoCaps" prefWidth="100"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- painel dinamico: Embalagem -->
+                        <VBox fx:id="painelEmbalagem" spacing="8" visible="false" managed="false">
+                            <Label text="Volume:"/>
+                            <TextField fx:id="campoVolume" prefWidth="100"/>
+                        </VBox>
+
+                        <HBox spacing="10">
+                            <VBox spacing="5">
+                                <Label text="Estoque Mín.:"/>
+                                <TextField fx:id="campoEstoqueMinimo" prefWidth="100"/>
+                            </VBox>
+                            <VBox spacing="5">
+                                <Label text="Estoque Crít.:"/>
+                                <TextField fx:id="campoEstoqueCritico" prefWidth="100"/>
+                            </VBox>
+                        </HBox>
+
+                        <HBox spacing="20">
+                            <CheckBox fx:id="checkRotulo" text="Rótulo"/>
+                            <CheckBox fx:id="checkGeladeira" text="Geladeira"/>
+                            <CheckBox fx:id="checkControlado" text="Controlado"/>
+                        </HBox>
+
+                        <Label text="Observações:"/>
+                        <TextArea fx:id="campoObservacoes" prefHeight="120"/>
+
+                        <!-- secao de sinonimos -->
+                        <Label text="Sinônimos:" style="-fx-font-weight: bold;"/>
+                        <HBox spacing="5">
+                            <TextField fx:id="campoSinonimo" promptText="Adicionar sinônimo..."
+                                       HBox.hgrow="ALWAYS"/>
+                            <Button text="+" onAction="#adicionarSinonimo" prefWidth="30"/>
+                            <Button text="-" onAction="#removerSinonimo" prefWidth="30"/>
+                        </HBox>
+                        <ListView fx:id="listaSinonimos" prefHeight="80"/>
+
+                        <Label fx:id="mensagem" style="-fx-text-fill: red;"/>
+                    </VBox>
+                </ScrollPane>
             </HBox>
 
             <Separator/>
@@ -139,9 +160,9 @@
                 <TableView fx:id="tabelaLotes" prefHeight="180">
                     <columns>
                         <TableColumn fx:id="colLoteNome" text="Lote" prefWidth="100"/>
-                        <TableColumn fx:id="colLoteCusto" text="Custo" prefWidth="80"/>
+                        <TableColumn fx:id="colLoteCusto" text="Custo" prefWidth="70"/>
                         <TableColumn fx:id="colLoteQuantidade" text="Quantidade" prefWidth="90"/>
-                        <TableColumn fx:id="colLoteSaldo" text="Saldo" prefWidth="80"/>
+                        <TableColumn fx:id="colLoteSaldo" text="Saldo" prefWidth="70"/>
                         <TableColumn fx:id="colLoteValidade" text="Validade" prefWidth="90"/>
                         <TableColumn fx:id="colLoteFornecedor" text="Fornecedor" prefWidth="150"/>
                     </columns>

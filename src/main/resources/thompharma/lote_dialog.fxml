@@ -17,41 +17,48 @@
     <HBox spacing="10">
         <VBox spacing="5">
             <Label text="Nome do Lote:"/>
-            <TextField fx:id="campoNomeLote"/>
+            <TextField fx:id="campoNomeLote" prefWidth="180"/>
         </VBox>
         <VBox spacing="5">
             <Label text="Validade:"/>
-            <TextField fx:id="campoValidade" promptText="dd/mm/aaaa"/>
+            <TextField fx:id="campoValidade" promptText="dd/mm/aaaa" prefWidth="110"/>
         </VBox>
     </HBox>
 
     <HBox spacing="10">
         <VBox spacing="5">
             <Label text="Quantidade:"/>
-            <TextField fx:id="campoQuantidade"/>
+            <TextField fx:id="campoQuantidade" prefWidth="90"/>
         </VBox>
         <VBox spacing="5">
             <Label text="Custo:"/>
-            <TextField fx:id="campoCusto"/>
+            <TextField fx:id="campoCusto" prefWidth="90"/>
         </VBox>
         <VBox spacing="5">
-            <Label text="Fator:"/>
-            <TextField fx:id="campoFator"/>
+            <Label text="Densidade:"/>
+            <TextField fx:id="campoDensidade" prefWidth="80"/>
         </VBox>
     </HBox>
 
     <HBox spacing="10">
         <VBox spacing="5">
-            <Label text="Densidade:"/>
-            <TextField fx:id="campoDensidade"/>
+            <Label text="Fator 1 (preço):"/>
+            <TextField fx:id="campoFator" prefWidth="100"/>
         </VBox>
         <VBox spacing="5">
+            <Label text="Fator 2 (correção/marca):"/>
+            <TextField fx:id="campoFator2" prefWidth="130"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="10">
+        <VBox spacing="5">
             <Label text="End. Uso:"/>
-            <TextField fx:id="campoEnderecoUso"/>
+            <TextField fx:id="campoEnderecoUso" prefWidth="140"/>
         </VBox>
         <VBox spacing="5">
             <Label text="End. Estoque:"/>
-            <TextField fx:id="campoEnderecoEstoque"/>
+            <TextField fx:id="campoEnderecoEstoque" prefWidth="140"/>
         </VBox>
     </HBox>
 
