@@ -140,17 +140,17 @@ public class PrincipalController {
     }
 
     /**
-     * abre o modulo de ferramentas do sistema
+     * abre o modulo de rotulos de embalagem
      */
     @FXML
-    private void abrirFerramentas() {
+    private void abrirRotulos() {
         try {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/thompharma/funcionarios.fxml")
+                getClass().getResource("/thompharma/rotulos.fxml")
             );
             App.getStage().getScene().setRoot(loader.load());
         } catch (Exception e) {
-            System.out.println("Erro ao abrir funcionarios: " + e.getMessage());
+            System.out.println("Erro ao abrir rotulos: " + e.getMessage());
         }
     }
 

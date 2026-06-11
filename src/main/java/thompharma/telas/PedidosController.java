@@ -4,6 +4,7 @@ import thompharma.App;
 import thompharma.modelo.Pedido;
 import thompharma.modelo.PedidoItem;
 import thompharma.Conexao;
+import thompharma.telas.RotulosController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -462,6 +463,18 @@ public class PedidosController {
                 ps.executeUpdate();
 
                 mensagem.setText("Pedido atualizado com sucesso.");
+            }
+
+            // gera rotulo automaticamente se o status for Em Producao
+            if ("Em Produção".equals(status)) {
+                String nomeFormula = idsReceitas.entrySet().stream()
+                    .filter(e2 -> e2.getValue().equals(idReceita))
+                    .map(Map.Entry::getKey).findFirst().orElse("Fórmula avulsa");
+                String nomePrescritorVal = idsPrescritores.entrySet().stream()
+                    .filter(e2 -> e2.getValue().equals(idPrescritor))
+                    .map(Map.Entry::getKey).findFirst().orElse(null);
+                RotulosController.gerarSeNaoExistir(idPedidoAtual, nomeFormula,
+                    nomeCliente, nomePrescritorVal);
             }
 
             carregarPedidos();

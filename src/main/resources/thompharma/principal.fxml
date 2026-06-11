@@ -40,7 +40,7 @@
             <HBox spacing="15" alignment="CENTER">
                 <Button text="Tabelas" prefWidth="150" prefHeight="60" onAction="#abrirTabelas"/>
                 <Button text="Relatórios" prefWidth="150" prefHeight="60" onAction="#abrirRelatorios"/>
-                <Button text="Ferramentas" prefWidth="150" prefHeight="60" onAction="#abrirFerramentas"/>
+                <Button text="Rótulos" prefWidth="150" prefHeight="60" onAction="#abrirRotulos"/>
             </HBox>
         </VBox>
     </center>
