@@ -34,7 +34,7 @@
             </HBox>
             <HBox spacing="15" alignment="CENTER">
                 <Button text="Receitas" prefWidth="150" prefHeight="60" onAction="#abrirReceitas"/>
-                <Button text="Orçamentos" prefWidth="150" prefHeight="60" onAction="#abrirOrcamentos"/>
+                <Button text="Calculadora" prefWidth="150" prefHeight="60" onAction="#abrirCalculadora"/>
                 <Button text="Pedidos" prefWidth="150" prefHeight="60" onAction="#abrirPedidos"/>
             </HBox>
             <HBox spacing="15" alignment="CENTER">

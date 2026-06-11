@@ -70,11 +70,19 @@ public class PrincipalController {
     }
 
     /**
-     * abre o modulo de orcamentos
+     * abre a calculadora farmaceutica
+     * contem abas para floral, homeopatia liquida, globulos e dose unica
      */
     @FXML
-    private void abrirOrcamentos() {
-        System.out.println("Orcamentos - em desenvolvimento");
+    private void abrirCalculadora() {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/thompharma/calculadora.fxml")
+            );
+            App.getStage().getScene().setRoot(loader.load());
+        } catch (Exception e) {
+            System.out.println("Erro ao abrir calculadora: " + e.getMessage());
+        }
     }
 
     /**
