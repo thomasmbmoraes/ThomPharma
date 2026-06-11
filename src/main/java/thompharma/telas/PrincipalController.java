@@ -86,11 +86,18 @@ public class PrincipalController {
     }
 
     /**
-     * abre o modulo de pedidos
+     * abre o modulo de pedidos de manipulacao
      */
     @FXML
     private void abrirPedidos() {
-        System.out.println("Pedidos - em desenvolvimento");
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/thompharma/pedidos.fxml")
+            );
+            App.getStage().getScene().setRoot(loader.load());
+        } catch (Exception e) {
+            System.out.println("Erro ao abrir pedidos: " + e.getMessage());
+        }
     }
 
     /**

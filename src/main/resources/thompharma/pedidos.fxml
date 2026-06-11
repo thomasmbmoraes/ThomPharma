@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="thompharma.telas.PedidosController">
+
+    <top>
+        <VBox style="-fx-background-color: #2c3e50;">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Label text="Pedidos de Manipulação"
+                   style="-fx-text-fill: white; -fx-font-size: 16px;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+
+            <!-- parte superior: lista + formulario -->
+            <HBox spacing="20">
+
+                <!-- lista de pedidos com filtros -->
+                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                    <Label text="Pedidos:"/>
+                    <TextField fx:id="campoFiltro" promptText="Buscar por cliente..."/>
+                    <ComboBox fx:id="comboFiltroStatus" prefWidth="200"
+                              onAction="#filtrar"/>
+                    <TableView fx:id="tabelaPedidos" prefHeight="280">
+                        <columns>
+                            <TableColumn fx:id="colCliente" text="Cliente" prefWidth="160"/>
+                            <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+                            <TableColumn fx:id="colDataPedido" text="Pedido" prefWidth="90"/>
+                            <TableColumn fx:id="colDataRetirada" text="Retirada" prefWidth="90"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="10">
+                        <Button text="Novo" onAction="#novo"/>
+                        <Button text="Salvar" onAction="#salvar"/>
+                        <Button text="Excluir" onAction="#excluir"/>
+                    </HBox>
+                    <Label fx:id="mensagem" style="-fx-text-fill: red;" wrapText="true"/>
+                </VBox>
+
+                <!-- formulario do pedido -->
+                <VBox spacing="8" prefWidth="380">
+                    <Label text="Cliente:"/>
+                    <ComboBox fx:id="comboCliente" prefWidth="360"/>
+
+                    <Label text="Prescritor (opcional):"/>
+                    <ComboBox fx:id="comboPrescritor" prefWidth="360"/>
+
+                    <Label text="Receita base (opcional):"/>
+                    <ComboBox fx:id="comboReceita" prefWidth="360"/>
+
+                    <HBox spacing="20">
+                        <VBox spacing="4">
+                            <Label text="Data do pedido:"/>
+                            <DatePicker fx:id="dateDataPedido" prefWidth="160"/>
+                        </VBox>
+                        <VBox spacing="4">
+                            <Label text="Data de retirada:"/>
+                            <DatePicker fx:id="dateDataRetirada" prefWidth="160"/>
+                        </VBox>
+                    </HBox>
+
+                    <Label text="Status:"/>
+                    <ComboBox fx:id="comboStatus" prefWidth="200"/>
+
+                    <Label text="Observações:"/>
+                    <TextArea fx:id="campoObservacoes" prefHeight="80"/>
+                </VBox>
+            </HBox>
+
+            <Separator/>
+
+            <!-- parte inferior: itens do pedido -->
+            <VBox spacing="8">
+                <Label text="Itens do Pedido:"
+                       style="-fx-font-weight: bold;"/>
+
+                <TableView fx:id="tabelaItens" prefHeight="150">
+                    <columns>
+                        <TableColumn fx:id="colItemMP" text="Matéria-Prima" prefWidth="220"/>
+                        <TableColumn fx:id="colItemQtd" text="Quantidade" prefWidth="90"/>
+                        <TableColumn fx:id="colItemUnidade" text="Unidade" prefWidth="70"/>
+                        <TableColumn fx:id="colItemObs" text="Observação" prefWidth="200"/>
+                    </columns>
+                </TableView>
+
+                <!-- adicionar item manualmente (ex: embalagem, mp extra) -->
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <ComboBox fx:id="comboItemMP" prefWidth="220" promptText="Matéria-prima..."/>
+                    <TextField fx:id="campoItemQtd" prefWidth="80" promptText="Qtd."/>
+                    <ComboBox fx:id="comboItemUnidade" prefWidth="80"/>
+                    <TextField fx:id="campoItemObs" prefWidth="150" promptText="Observação..."/>
+                    <Button text="Adicionar" onAction="#adicionarItem"/>
+                    <Button text="Remover" onAction="#removerItem"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Button text="Fechar" onAction="#fechar"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
