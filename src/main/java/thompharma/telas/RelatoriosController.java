@@ -177,8 +177,8 @@ public class RelatoriosController {
 
     private void configurarTabelaEstoque() {
         tabelaEstoque.getColumns().clear();
-        String[] nomes = {"Matéria-Prima", "Unidade", "Estoque Atual", "Est. Mínimo", "Situação"};
-        int[] larguras = {220, 80, 110, 110, 100};
+        String[] nomes = {"Matéria-Prima", "Unidade", "Saldo Atual", "Est. Mínimo", "Est. Crítico", "Situação"};
+        int[] larguras = {200, 70, 90, 90, 90, 90};
         for (int i = 0; i < nomes.length; i++) {
             final int col = i;
             TableColumn<ObservableList<String>, String> c = new TableColumn<>(nomes[i]);
@@ -196,17 +196,18 @@ public class RelatoriosController {
         ObservableList<ObservableList<String>> dados = FXCollections.observableArrayList();
         String filtro = comboEstoqueFiltro.getValue();
 
-        String sql = "SELECT nome, unidade, estoque_atual, estoque_minimo FROM tb_materias_primas ORDER BY nome";
+        String sql = "SELECT nome, unidade, saldo, estoque_minimo, estoque_critico FROM tb_materias_primas ORDER BY nome";
         try (Connection conn = Conexao.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             int criticos = 0, minimos = 0, normais = 0;
             while (rs.next()) {
-                double atual = rs.getDouble("estoque_atual");
+                double saldo = rs.getDouble("saldo");
                 double minimo = rs.getDouble("estoque_minimo");
+                double critico = rs.getDouble("estoque_critico");
                 String situacao;
-                if (atual <= 0) { situacao = "Crítico"; criticos++; }
-                else if (atual <= minimo) { situacao = "Mínimo"; minimos++; }
+                if (saldo <= critico) { situacao = "Crítico"; criticos++; }
+                else if (saldo <= minimo) { situacao = "Mínimo"; minimos++; }
                 else { situacao = "Normal"; normais++; }
 
                 if ("Todos".equals(filtro)
@@ -216,8 +217,9 @@ public class RelatoriosController {
                     ObservableList<String> row = FXCollections.observableArrayList();
                     row.add(nullStr(rs.getString("nome")));
                     row.add(nullStr(rs.getString("unidade")));
-                    row.add(String.format("%.2f", atual));
+                    row.add(String.format("%.2f", saldo));
                     row.add(String.format("%.2f", minimo));
+                    row.add(String.format("%.2f", critico));
                     row.add(situacao);
                     dados.add(row);
                 }
@@ -238,8 +240,8 @@ public class RelatoriosController {
             @Override
             protected void updateItem(ObservableList<String> item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null || item.size() < 5) { setStyle(""); return; }
-                switch (item.get(4)) {
+                if (empty || item == null || item.size() < 6) { setStyle(""); return; }
+                switch (item.get(5)) {
                     case "Crítico": setStyle("-fx-background-color: #2d1020; -fx-text-fill: #f7768e;"); break;
                     case "Mínimo":  setStyle("-fx-background-color: #2a2510; -fx-text-fill: #e0af68;"); break;
                     default:        setStyle("");
