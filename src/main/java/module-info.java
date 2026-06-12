@@ -10,6 +10,7 @@ module thompharma {
     // dependencias para conexao com banco de dados postgresql
     requires java.sql;
     requires org.postgresql.jdbc;
+    requires jbcrypt;
 
     // permite que o javafx acesse as classes dos pacotes abaixo
     opens thompharma to javafx.fxml;

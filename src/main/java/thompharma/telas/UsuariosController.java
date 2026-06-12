@@ -2,6 +2,7 @@ package thompharma.telas;
 
 import thompharma.App;
 import thompharma.Conexao;
+import org.mindrot.jbcrypt.BCrypt;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -119,43 +120,63 @@ public class UsuariosController {
      */
     @FXML
     private void salvar() {
-        if (campoUsuario.getText().isEmpty() || campoSenha.getText().isEmpty()) {
-            mensagem.setText("Preencha usuario e senha!");
+        thompharma.modelo.Usuario selecionado = tabelaUsuarios.getSelectionModel().getSelectedItem();
+        boolean inserindo = (selecionado == null);
+
+        if (campoUsuario.getText().isEmpty()) {
+            mensagem.setStyle("-fx-text-fill: red;");
+            mensagem.setText("Preencha o nome de usuario!");
             return;
         }
-        try {
-            Connection conn = Conexao.conectar();
-            thompharma.modelo.Usuario selecionado = tabelaUsuarios.getSelectionModel().getSelectedItem();
+        if (inserindo && campoSenha.getText().isEmpty()) {
+            mensagem.setStyle("-fx-text-fill: red;");
+            mensagem.setText("Preencha a senha para novo usuario!");
+            return;
+        }
 
-            if (selecionado == null) {
-                // insere novo usuario
-                String sql = "INSERT INTO tb_usuarios (usuario, nome_completo, senha, admin, ativo) VALUES (?, ?, ?, ?, ?)";
-                PreparedStatement stmt = conn.prepareStatement(sql);
+        try (Connection conn = Conexao.conectar()) {
+            if (inserindo) {
+                String hash = BCrypt.hashpw(campoSenha.getText(), BCrypt.gensalt());
+                PreparedStatement stmt = conn.prepareStatement(
+                    "INSERT INTO tb_usuarios (usuario, nome_completo, senha, admin, ativo) VALUES (?, ?, ?, ?, ?)");
                 stmt.setString(1, campoUsuario.getText());
                 stmt.setString(2, campoNome.getText());
-                stmt.setString(3, campoSenha.getText());
+                stmt.setString(3, hash);
                 stmt.setBoolean(4, checkAdmin.isSelected());
                 stmt.setBoolean(5, checkAtivo.isSelected());
                 stmt.executeUpdate();
-                mensagem.setStyle("-fx-text-fill: green;");
+                mensagem.setStyle("-fx-text-fill: #9ece6a;");
                 mensagem.setText("Usuario cadastrado com sucesso!");
             } else {
-                // atualiza usuario existente
-                String sql = "UPDATE tb_usuarios SET usuario=?, nome_completo=?, admin=?, ativo=? WHERE id=?";
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, campoUsuario.getText());
-                stmt.setString(2, campoNome.getText());
-                stmt.setBoolean(3, checkAdmin.isSelected());
-                stmt.setBoolean(4, checkAtivo.isSelected());
-                stmt.setInt(5, selecionado.getId());
-                stmt.executeUpdate();
-                mensagem.setStyle("-fx-text-fill: green;");
+                if (!campoSenha.getText().isEmpty()) {
+                    // atualiza incluindo nova senha
+                    String hash = BCrypt.hashpw(campoSenha.getText(), BCrypt.gensalt());
+                    PreparedStatement stmt = conn.prepareStatement(
+                        "UPDATE tb_usuarios SET usuario=?, nome_completo=?, senha=?, admin=?, ativo=? WHERE id=?");
+                    stmt.setString(1, campoUsuario.getText());
+                    stmt.setString(2, campoNome.getText());
+                    stmt.setString(3, hash);
+                    stmt.setBoolean(4, checkAdmin.isSelected());
+                    stmt.setBoolean(5, checkAtivo.isSelected());
+                    stmt.setInt(6, selecionado.getId());
+                    stmt.executeUpdate();
+                } else {
+                    // atualiza sem alterar a senha
+                    PreparedStatement stmt = conn.prepareStatement(
+                        "UPDATE tb_usuarios SET usuario=?, nome_completo=?, admin=?, ativo=? WHERE id=?");
+                    stmt.setString(1, campoUsuario.getText());
+                    stmt.setString(2, campoNome.getText());
+                    stmt.setBoolean(3, checkAdmin.isSelected());
+                    stmt.setBoolean(4, checkAtivo.isSelected());
+                    stmt.setInt(5, selecionado.getId());
+                    stmt.executeUpdate();
+                }
+                mensagem.setStyle("-fx-text-fill: #9ece6a;");
                 mensagem.setText("Usuario atualizado com sucesso!");
             }
-            conn.close();
             carregarUsuarios();
         } catch (Exception e) {
-            mensagem.setStyle("-fx-text-fill: red;");
+            mensagem.setStyle("-fx-text-fill: #f7768e;");
             mensagem.setText("Erro ao salvar: " + e.getMessage());
         }
     }

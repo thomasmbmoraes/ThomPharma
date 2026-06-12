@@ -7,27 +7,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.mindrot.jbcrypt.BCrypt;
 
-/**
- * controller da tela de login
- * responsavel por autenticar o usuario no banco de dados
- * e redirecionar para a tela principal em caso de sucesso
- */
 public class LoginController {
 
-    // campos da tela de login
     @FXML private TextField campoUsuario;
     @FXML private PasswordField campoSenha;
     @FXML private Label mensagemErro;
 
-    /**
-     * executado ao clicar no botao entrar
-     * valida os campos, consulta o banco e abre a tela principal
-     */
     @FXML
     private void fazerLogin() {
         String usuario = campoUsuario.getText();
@@ -38,32 +28,56 @@ public class LoginController {
             return;
         }
 
-        try {
-            Connection conn = Conexao.conectar();
-            String sql = "SELECT * FROM tb_usuarios WHERE usuario = ? AND senha = ? AND ativo = true";
-            PreparedStatement stmt = conn.prepareStatement(sql);
+        try (Connection conn = Conexao.conectar()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                "SELECT id, nome_completo, senha, admin FROM tb_usuarios WHERE usuario = ? AND ativo = true"
+            );
             stmt.setString(1, usuario);
-            stmt.setString(2, senha);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                String nomeCompleto = rs.getString("nome_completo");
-                conn.close();
-
-                FXMLLoader loader = App.getLoader("principal");
-                App.getStage().getScene().setRoot(loader.load());
-                PrincipalController controller = loader.getController();
-                controller.setUsuario(nomeCompleto);
-                App.getStage().setTitle("ThomPharma");
-                App.getStage().setMaximized(true);
-            } else {
+            if (!rs.next()) {
                 mensagemErro.setText("Usuario ou senha incorretos!");
-                conn.close();
+                return;
             }
+
+            String hashArmazenado = rs.getString("senha");
+            boolean senhaCorreta;
+
+            if (hashArmazenado != null && hashArmazenado.startsWith("$2a$")) {
+                // senha já em bcrypt
+                senhaCorreta = BCrypt.checkpw(senha, hashArmazenado);
+            } else {
+                // senha em texto puro (contas antigas) — migra automaticamente ao logar
+                senhaCorreta = senha.equals(hashArmazenado);
+                if (senhaCorreta) {
+                    String novoHash = BCrypt.hashpw(senha, BCrypt.gensalt());
+                    try (PreparedStatement upd = conn.prepareStatement(
+                            "UPDATE tb_usuarios SET senha = ? WHERE id = ?")) {
+                        upd.setString(1, novoHash);
+                        upd.setInt(2, rs.getInt("id"));
+                        upd.executeUpdate();
+                    }
+                }
+            }
+
+            if (!senhaCorreta) {
+                mensagemErro.setText("Usuario ou senha incorretos!");
+                return;
+            }
+
+            App.setAdmin(rs.getBoolean("admin"));
+            App.setNomeUsuarioLogado(rs.getString("nome_completo"));
+
+            FXMLLoader loader = App.getLoader("principal");
+            App.getStage().getScene().setRoot(loader.load());
+            PrincipalController controller = loader.getController();
+            controller.setUsuario(App.getNomeUsuarioLogado());
+            App.getStage().setTitle("ThomPharma");
+            App.getStage().setMaximized(true);
 
         } catch (Exception e) {
             mensagemErro.setText("Erro ao conectar com banco!");
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 }

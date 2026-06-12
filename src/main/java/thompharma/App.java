@@ -12,8 +12,14 @@ import java.io.IOException;
  */
 public class App extends Application {
 
-    // janela principal do sistema, estatica para ser acessada de qualquer classe
     private static Stage stage;
+    private static boolean admin;
+    private static String nomeUsuarioLogado;
+
+    public static boolean isAdmin() { return admin; }
+    public static void setAdmin(boolean a) { admin = a; }
+    public static String getNomeUsuarioLogado() { return nomeUsuarioLogado; }
+    public static void setNomeUsuarioLogado(String nome) { nomeUsuarioLogado = nome; }
 
     /**
      * metodo de inicializacao do javafx

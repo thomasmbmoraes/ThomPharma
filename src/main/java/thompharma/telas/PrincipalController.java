@@ -2,30 +2,35 @@ package thompharma.telas;
 
 import thompharma.App;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-/**
- * controller da tela principal do sistema
- * gerencia a navegacao entre os modulos
- * exibe o nome do usuario logado no cabecalho
- */
 public class PrincipalController {
 
-    // label do cabecalho que exibe o nome do usuario logado
     @FXML private Label labelUsuario;
 
-    /**
-     * define o nome do usuario logado no cabecalho
-     * chamado pelo LoginController apos autenticacao bem sucedida
-     * @param nomeUsuario nome completo do usuario logado
-     */
+    // botoes restritos a administradores
+    @FXML private Button btnMatPrimas;
+    @FXML private Button btnTabelas;
+    @FXML private Button btnRelatorios;
+
     public void setUsuario(String nomeUsuario) {
-        labelUsuario.setText("ThomPharma - Bem vindo, " + nomeUsuario);
+        String perfil = App.isAdmin() ? "Admin" : "Operador";
+        labelUsuario.setText("ThomPharma — " + nomeUsuario + "  [" + perfil + "]");
+        aplicarPermissoes();
     }
 
-    /**
-     * abre o modulo de cadastro de materias primas
-     */
+    private void aplicarPermissoes() {
+        if (!App.isAdmin()) {
+            btnMatPrimas.setDisable(true);
+            btnMatPrimas.setOpacity(0.35);
+            btnTabelas.setDisable(true);
+            btnTabelas.setOpacity(0.35);
+            btnRelatorios.setDisable(true);
+            btnRelatorios.setOpacity(0.35);
+        }
+    }
+
     @FXML
     private void abrirMatPrimas() {
         try {
@@ -38,10 +43,6 @@ public class PrincipalController {
         }
     }
 
-    /**
-     * abre o modulo de cadastro de clientes
-     * por enquanto abre fornecedores para teste
-     */
     @FXML
     private void abrirClientes() {
         try {
@@ -54,9 +55,6 @@ public class PrincipalController {
         }
     }
 
-    /**
-     * abre o modulo de cadastro de receitas
-     */
     @FXML
     private void abrirReceitas() {
         try {
@@ -69,10 +67,6 @@ public class PrincipalController {
         }
     }
 
-    /**
-     * abre a calculadora farmaceutica
-     * contem abas para floral, homeopatia liquida, globulos e dose unica
-     */
     @FXML
     private void abrirCalculadora() {
         try {
@@ -85,9 +79,6 @@ public class PrincipalController {
         }
     }
 
-    /**
-     * abre o modulo de pedidos de manipulacao
-     */
     @FXML
     private void abrirPedidos() {
         try {
@@ -100,9 +91,6 @@ public class PrincipalController {
         }
     }
 
-    /**
-     * abre o modulo de cadastro de prescritores
-     */
     @FXML
     private void abrirPrescritores() {
         try {
@@ -115,10 +103,6 @@ public class PrincipalController {
         }
     }
 
-    /**
-     * abre o modulo de tabelas de apoio
-     * inclui usuarios, posologias, formas farmaceuticas, etc
-     */
     @FXML
     private void abrirTabelas() {
         try {
@@ -131,9 +115,6 @@ public class PrincipalController {
         }
     }
 
-    /**
-     * abre o modulo de relatorios
-     */
     @FXML
     private void abrirRelatorios() {
         try {
@@ -146,9 +127,6 @@ public class PrincipalController {
         }
     }
 
-    /**
-     * abre o modulo de rotulos de embalagem
-     */
     @FXML
     private void abrirRotulos() {
         try {
@@ -161,13 +139,11 @@ public class PrincipalController {
         }
     }
 
-    /**
-     * realiza o logoff do usuario atual
-     * volta para a tela de login
-     */
     @FXML
     private void fazerLogoff() {
         try {
+            App.setAdmin(false);
+            App.setNomeUsuarioLogado(null);
             App.setRoot("login");
             App.getStage().setTitle("ThomPharma - Login");
             App.getStage().setMaximized(true);

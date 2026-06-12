@@ -30,7 +30,7 @@
                 <Label text="CADASTROS"
                        style="-fx-text-fill: #565f89; -fx-font-size: 11px; -fx-font-weight: bold;"/>
                 <HBox spacing="14" alignment="CENTER">
-                    <Button text="Mat. Primas"  prefWidth="160" prefHeight="64"
+                    <Button fx:id="btnMatPrimas" text="Mat. Primas"  prefWidth="160" prefHeight="64"
                             styleClass="btn-menu-cadastro" onAction="#abrirMatPrimas"/>
                     <Button text="Clientes"     prefWidth="160" prefHeight="64"
                             styleClass="btn-menu-cadastro" onAction="#abrirClientes"/>
@@ -58,9 +58,9 @@
                 <Label text="SISTEMA"
                        style="-fx-text-fill: #565f89; -fx-font-size: 11px; -fx-font-weight: bold;"/>
                 <HBox spacing="14" alignment="CENTER">
-                    <Button text="Tabelas"    prefWidth="160" prefHeight="64"
+                    <Button fx:id="btnTabelas" text="Tabelas"    prefWidth="160" prefHeight="64"
                             styleClass="btn-menu-sistema" onAction="#abrirTabelas"/>
-                    <Button text="Relatórios" prefWidth="160" prefHeight="64"
+                    <Button fx:id="btnRelatorios" text="Relatórios" prefWidth="160" prefHeight="64"
                             styleClass="btn-menu-sistema" onAction="#abrirRelatorios"/>
                     <Button text="Rótulos"    prefWidth="160" prefHeight="64"
                             styleClass="btn-menu-sistema" onAction="#abrirRotulos"/>
