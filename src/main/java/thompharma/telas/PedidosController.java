@@ -124,11 +124,11 @@ public class PedidosController {
                 } else {
                     switch (p.getStatus()) {
                         case "Pronto":
-                            setStyle("-fx-background-color: #d5f5e3;"); break;
+                            setStyle("-fx-background-color: #1a3028; -fx-text-fill: #9ece6a;"); break;
                         case "Cancelado":
-                            setStyle("-fx-background-color: #fadbd8;"); break;
+                            setStyle("-fx-background-color: #2d1020; -fx-text-fill: #f7768e;"); break;
                         case "Em Produção":
-                            setStyle("-fx-background-color: #fef9e7;"); break;
+                            setStyle("-fx-background-color: #2a2510; -fx-text-fill: #e0af68;"); break;
                         default:
                             setStyle("");
                     }

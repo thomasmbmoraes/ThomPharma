@@ -162,7 +162,7 @@ public class PrincipalController {
     private void fazerLogoff() {
         try {
             App.setRoot("login");
-            App.getStage().setTitle("Farmap - Login");
+            App.getStage().setTitle("ThomPharma - Login");
             App.getStage().setMaximized(true);
         } catch (Exception e) {
             System.out.println("Erro ao fazer logoff: " + e.getMessage());

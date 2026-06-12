@@ -182,6 +182,31 @@ public class Mascara {
     }
     
     /**
+     * padroniza um nome capitalizando a primeira letra de cada palavra
+     * artigos e preposicoes sao mantidos em minusculo exceto no inicio
+     * @param nome nome digitado pelo usuario
+     * @return nome formatado ou o valor original se nulo/vazio
+     */
+    public static String padronizarNome(String nome) {
+        if (nome == null || nome.isEmpty()) return nome;
+        java.util.Set<String> artigos = new java.util.HashSet<>(
+            java.util.Arrays.asList("de","da","do","das","dos","e","a","o","em","por","com","sem")
+        );
+        String[] palavras = nome.trim().toLowerCase().split("\\s+");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < palavras.length; i++) {
+            if (i > 0) sb.append(" ");
+            String p = palavras[i];
+            if (!p.isEmpty()) {
+                sb.append((i > 0 && artigos.contains(p))
+                    ? p
+                    : Character.toUpperCase(p.charAt(0)) + p.substring(1));
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
     * formata o campo como RG: xx.xxx.xxx-x
     * limita a 12 caracteres incluindo pontos e traco
     */

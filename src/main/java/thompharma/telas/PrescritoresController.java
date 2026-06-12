@@ -185,7 +185,7 @@ public class PrescritoresController {
             return;
         }
 
-        String nome = padronizarNome(campoNome.getText());
+        String nome = Mascara.padronizarNome(campoNome.getText());
 
         try {
             Connection conn = Conexao.conectar();
@@ -278,30 +278,6 @@ public class PrescritoresController {
             mensagem.setStyle("-fx-text-fill: red;");
             mensagem.setText("Erro ao excluir: " + e.getMessage());
         }
-    }
-
-    /**
-     * padroniza o nome capitalizando a primeira letra de cada palavra
-     * artigos e preposicoes sao mantidos em minusculo
-     * @param nome nome digitado pelo usuario
-     * @return nome formatado
-     */
-    private String padronizarNome(String nome) {
-        if (nome == null || nome.isEmpty()) return nome;
-        String[] artigos = {"de", "da", "do", "das", "dos", "e", "a", "o", "em", "por"};
-        java.util.Set<String> artigosSet = new java.util.HashSet<>(java.util.Arrays.asList(artigos));
-        String[] palavras = nome.trim().toLowerCase().split("\\s+");
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < palavras.length; i++) {
-            if (i > 0) sb.append(" ");
-            if (i > 0 && artigosSet.contains(palavras[i])) {
-                sb.append(palavras[i]);
-            } else if (!palavras[i].isEmpty()) {
-                sb.append(Character.toUpperCase(palavras[i].charAt(0)));
-                sb.append(palavras[i].substring(1));
-            }
-        }
-        return sb.toString();
     }
 
     /**

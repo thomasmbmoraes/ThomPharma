@@ -31,9 +31,8 @@ public class Conexao {
             if (input != null) {
                 props.load(input);
                 input.close();
-                System.out.println("config.properties carregado com sucesso!");
             } else {
-                System.out.println("Arquivo config.properties nao encontrado!");
+                System.err.println("Arquivo config.properties nao encontrado!");
             }
         } catch (Exception e) {
             System.out.println("Erro ao carregar config.properties: " + e.getMessage());
@@ -54,22 +53,17 @@ public class Conexao {
         String usuario = props.getProperty("db.usuario");
         String senha = props.getProperty("db.senha");
 
-        // tenta conexao local primeiro
+        // tenta conexao local primeiro, depois remota como fallback
         try {
-            Connection conn = DriverManager.getConnection(urlLocal, usuario, senha);
-            System.out.println("Conexao local estabelecida!");
-            return conn;
+            return DriverManager.getConnection(urlLocal, usuario, senha);
         } catch (SQLException e) {
-            System.out.println("Conexao local falhou, tentando remota...");
+            // silencioso — tenta remota antes de reportar erro
         }
 
-        // tenta conexao remota
         try {
-            Connection conn = DriverManager.getConnection(urlRemota, usuario, senha);
-            System.out.println("Conexao remota estabelecida!");
-            return conn;
+            return DriverManager.getConnection(urlRemota, usuario, senha);
         } catch (SQLException e) {
-            System.out.println("Erro ao conectar: " + e.getMessage());
+            System.err.println("Erro ao conectar com o banco: " + e.getMessage());
             return null;
         }
     }

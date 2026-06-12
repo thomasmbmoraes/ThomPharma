@@ -155,9 +155,9 @@ public class MateriasPrimasController {
                 if (mp == null || empty) {
                     setStyle("");
                 } else if (mp.getEstoqueCritico() > 0 && mp.getSaldo() <= mp.getEstoqueCritico()) {
-                    setStyle("-fx-background-color: #ffcccc;");
+                    setStyle("-fx-background-color: #2d1020; -fx-text-fill: #f7768e;");
                 } else if (mp.getEstoqueMinimo() > 0 && mp.getSaldo() <= mp.getEstoqueMinimo()) {
-                    setStyle("-fx-background-color: #fff3cd;");
+                    setStyle("-fx-background-color: #2a2510; -fx-text-fill: #e0af68;");
                 } else {
                     setStyle("");
                 }
