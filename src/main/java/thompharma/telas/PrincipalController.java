@@ -136,7 +136,14 @@ public class PrincipalController {
      */
     @FXML
     private void abrirRelatorios() {
-        System.out.println("Relatorios - em desenvolvimento");
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/thompharma/relatorios.fxml")
+            );
+            App.getStage().getScene().setRoot(loader.load());
+        } catch (Exception e) {
+            System.out.println("Erro ao abrir relatorios: " + e.getMessage());
+        }
     }
 
     /**
