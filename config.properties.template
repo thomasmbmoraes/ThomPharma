@@ -1,0 +1,8 @@
+# configuracoes do banco de dados ThomPharma
+# copie este arquivo para config.properties e preencha com seus dados
+# o config.properties real nao e versionado no GitHub (contem senhas)
+
+db.url.local=jdbc:postgresql://localhost:5432/DB_FARMAP
+db.url.remota=jdbc:postgresql://SEU_SERVIDOR:5432/DB_FARMAP
+db.usuario=SEU_USUARIO
+db.senha=SUA_SENHA
