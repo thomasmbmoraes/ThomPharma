@@ -40,13 +40,13 @@ O **ThomPharma** foi construído especificamente para esse contexto. Ele central
 ## Screenshots
 
 ### Login
-![Login](farmap/screenshots/login%20thomphama.png)
+![Login](ThomPharma/screenshots/login%20thomphama.png)
 > Autenticação com bcrypt, bloqueio automático após 5 tentativas erradas (15 min, persistido em banco), migração automática de senhas legadas em texto puro.
 
 ---
 
 ### Menu Principal
-![Menu Principal](farmap/screenshots/menu%20principal%20thompharma.png)
+![Menu Principal](ThomPharma/screenshots/menu%20principal%20thompharma.png)
 > Navegação em três seções: **Cadastros**, **Operações** e **Sistema**. Botões desabilitados automaticamente para perfil Operador (Mat. Primas, Tabelas, Relatórios). Usuário logado e perfil exibidos no cabeçalho.
 
 ---
@@ -57,70 +57,70 @@ O **ThomPharma** foi construído especificamente para esse contexto. Ele central
 ---
 
 ### Clientes
-![Clientes](farmap/screenshots/clientes%20thompharma.png)
+![Clientes](ThomPharma/screenshots/clientes%20thompharma.png)
 > Cadastro completo com máscara de CPF, dois telefones, e-mail, data de nascimento, percentual de desconto padrão, endereço com CEP e campo de observações clínicas (ex: alergias). Busca em tempo real pelo nome.
 
 ---
 
 ### Prescritores
-![Prescritores](farmap/screenshots/preescritores%20thompharma.png)
+![Prescritores](ThomPharma/screenshots/preescritores%20thompharma.png)
 > Suporte a múltiplos conselhos: CRM, CRO, CRV, CRP, CRN, CREFITO. Número de registro validado por unicidade dentro do mesmo tipo. Filtro combinado por nome e tipo de registro.
 
 ---
 
 ### Matérias-Primas
-![Matérias-Primas](farmap/screenshots/materias%20primas%20thompharma.png)
+![Matérias-Primas](ThomPharma/screenshots/materias%20primas%20thompharma.png)
 > Controle de estoque com alertas de nível mínimo e crítico. Flags de controle ANVISA, necessidade de geladeira e impressão de rótulo. Tipo: Sólido, Líquido, Homeopatia, Floral, Cápsula, Excipiente.
 
-![Matérias-Primas — lotes e sinônimos](farmap/screenshots/materias%20primas%202%20thompharma.png)
+![Matérias-Primas — lotes e sinônimos](ThomPharma/screenshots/materias%20primas%202%20thompharma.png)
 > Cada matéria-prima tem seus lotes listados abaixo (custo, quantidade, saldo, validade com `LocalDate`, fornecedor). Campo de sinônimos permite buscar a substância por nomes alternativos.
 
 ---
 
 ### Receitas (Fórmulas)
-![Receitas](farmap/screenshots/receitas%20thompharma.png)
+![Receitas](ThomPharma/screenshots/receitas%20thompharma.png)
 > Cadastro de fórmulas com nome fantasia, tipo (Floral, Cápsula, Creme, Homeopatia, Dose Única…) e lista de ingredientes com quantidade e unidade. Uma receita pode ser reutilizada em múltiplos pedidos.
 
 ---
 
 ### Pedidos de Manipulação
-![Pedidos](farmap/screenshots/pedidos%20thompharma.png)
+![Pedidos](ThomPharma/screenshots/pedidos%20thompharma.png)
 > Fluxo completo: **Aguardando → Em Produção → Pronto → Entregue**. Cada pedido vincula cliente, prescritor, receita base e itens específicos com quantidades. Data do pedido e data de retirada separadas.
 
 ---
 
 ### Rótulos de Embalagem
-![Rótulos](farmap/screenshots/rotulos%20thompharma.png)
+![Rótulos](ThomPharma/screenshots/rotulos%20thompharma.png)
 > Rótulo gerado automaticamente ao mover um pedido para "Em Produção". Código sequencial diário no formato `DDMMAA/NN`. Campos editáveis: posologia, validade, observações, dimensões (mm). Botão de impressão direta.
 
 ---
 
 ### Calculadora Farmacêutica
-![Calculadora](farmap/screenshots/calculadora%20thompharma.png)
+![Calculadora](ThomPharma/screenshots/calculadora%20thompharma.png)
 > Quatro modos de cálculo: **Floral**, **Homeopatia Líquida**, **Homeopatia Glóbulos** e **Dose Única**. Para florais: volume total + número de florais → ml/floral, gotas/floral, volume do veículo.
 
-![Calculadora — resultado detalhado](farmap/screenshots/calculadora%202%20thompharma.png)
+![Calculadora — resultado detalhado](ThomPharma/screenshots/calculadora%202%20thompharma.png)
 > Resultado exibido em área de texto com breakdown por floral, pronto para comunicar ao farmacêutico manipulador.
 
 ---
 
 ### Relatórios
-![Relatório — Pedidos por Período](farmap/screenshots/relatorios%20pedidos%20thompharma.png)
+![Relatório — Pedidos por Período](ThomPharma/screenshots/relatorios%20pedidos%20thompharma.png)
 > **Pedidos por Período:** filtro de data De/Até e status. Exibe cliente, prescritor, fórmula, status e data de retirada. Botão Imprimir.
 
-![Relatório — Estoque de Mat. Primas](farmap/screenshots/relatorios%20estoque%20materia%20prima%20thompharma.png)
+![Relatório — Estoque de Mat. Primas](ThomPharma/screenshots/relatorios%20estoque%20materia%20prima%20thompharma.png)
 > **Estoque de Mat. Primas:** situação Normal / Mínimo / Crítico com destaque visual. Rodapé: total de itens, quantos em crítico, quantos em mínimo.
 
-![Relatório — Rótulos Emitidos](farmap/screenshots/relatorio%20rotulos%20thompharma.png)
+![Relatório — Rótulos Emitidos](ThomPharma/screenshots/relatorio%20rotulos%20thompharma.png)
 > **Rótulos Emitidos:** filtro por período e busca livre por cliente ou fórmula. Exibe código, data, cliente, fórmula, prescritor e validade.
 
-![Relatório — Clientes Mais Atendidos](farmap/screenshots/relatorios%20clientes%20thompharma.png)
+![Relatório — Clientes Mais Atendidos](ThomPharma/screenshots/relatorios%20clientes%20thompharma.png)
 > **Clientes Mais Atendidos:** ranking por número de pedidos no período, com último pedido e status mais comum.
 
 ---
 
 ### Usuários
-![Usuários](farmap/screenshots/usuarios%20thompharma.png)
+![Usuários](ThomPharma/screenshots/usuarios%20thompharma.png)
 > Gestão de acesso: login, nome completo, senha (bcrypt), flag Administrador e flag Ativo. Operadores têm acesso restrito automaticamente.
 
 ---
@@ -244,7 +244,7 @@ graph TD
 ## Estrutura do projeto
 
 ```
-farmap/src/main/java/
+ThomPharma/src/main/java/
 ├── module-info.java
 └── thompharma/
     ├── App.java                   # Ponto de entrada; init/shutdown do pool HikariCP
@@ -324,11 +324,11 @@ docker run -d \
   postgres:15
 ```
 
-Execute os scripts DDL em `farmap/src/main/resources/sql/` para criar as tabelas.
+Execute os scripts DDL em `ThomPharma/src/main/resources/sql/` para criar as tabelas.
 
 ### 2. Configuração
 
-Crie `farmap/config.properties` (nunca versionado — está no `.gitignore`):
+Crie `ThomPharma/config.properties` (nunca versionado — está no `.gitignore`):
 
 ```properties
 db.url.local=jdbc:postgresql://localhost:5432/farmap
@@ -342,7 +342,7 @@ A aplicação tenta a URL local primeiro; se falhar, cai na remota.
 ### 3. Build e execução
 
 ```bash
-cd farmap
+cd ThomPharma
 mvn clean javafx:run
 ```
 
@@ -365,7 +365,7 @@ VALUES ('admin', 'Administrador', '$2a$12$...hash...', true, true);
 ### Testes
 
 ```bash
-cd farmap
+cd ThomPharma
 mvn test
 ```
 
