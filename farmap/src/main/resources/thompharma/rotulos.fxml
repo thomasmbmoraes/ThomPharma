@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="thompharma.telas.RotulosController"
+            stylesheets="@thompharma.css">
+
+    <top>
+        <VBox styleClass="cabecalho">
+            <Label text="Rótulos de Embalagem" styleClass="cabecalho-titulo"/>
+        </VBox>
+    </top>
+
+    <center>
+        <HBox spacing="20">
+            <padding><Insets top="10" right="20" bottom="10" left="20"/></padding>
+
+            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                <Label text="Rótulos gerados:"/>
+                <TextField fx:id="campoFiltro"
+                           promptText="Buscar por código, cliente ou fórmula..."/>
+                <DatePicker fx:id="dateFiltro" promptText="Filtrar por data..."
+                            onAction="#filtrar"/>
+                <Button text="Filtrar" onAction="#filtrar"/>
+
+                <TableView fx:id="tabelaRotulos" VBox.vgrow="ALWAYS" prefHeight="480">
+                    <columns>
+                        <TableColumn fx:id="colCodigo"  text="Código"  prefWidth="100"/>
+                        <TableColumn fx:id="colCliente" text="Cliente" prefWidth="160"/>
+                        <TableColumn fx:id="colFormula" text="Fórmula" prefWidth="160"/>
+                        <TableColumn fx:id="colData"    text="Data"    prefWidth="90"/>
+                    </columns>
+                </TableView>
+
+                <HBox spacing="10">
+                    <Button text="Excluir" onAction="#excluir" styleClass="btn-excluir"/>
+                </HBox>
+            </VBox>
+
+            <ScrollPane fitToWidth="true" prefWidth="420">
+                <VBox spacing="8">
+                    <padding><Insets top="2" right="8" bottom="2" left="2"/></padding>
+
+                    <Label text="Editar Rótulo:" style="-fx-font-weight: bold;"/>
+
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <Label text="Código:"/>
+                        <Label fx:id="labelCodigo" text="—"
+                               style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #7aa2f7;"/>
+                    </HBox>
+
+                    <Label text="Nome da Fórmula:"/>
+                    <TextField fx:id="campoNomeFormula"/>
+
+                    <Label text="Paciente:"/>
+                    <TextField fx:id="campoNomeCliente"/>
+
+                    <Label text="Prescritor:"/>
+                    <TextField fx:id="campoNomePrescritor"/>
+
+                    <Label text="Posologia:"/>
+                    <TextArea fx:id="campoPosologia" prefHeight="80"
+                              promptText="Ex: Tomar 20 gotas 3x ao dia em água"/>
+
+                    <Label text="Validade:"/>
+                    <DatePicker fx:id="dateValidade"/>
+
+                    <Label text="Observações:"/>
+                    <TextArea fx:id="campoObservacoes" prefHeight="60"/>
+
+                    <Separator/>
+
+                    <Label text="Tamanho da etiqueta:" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="comboTamanho" prefWidth="210"/>
+
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Largura (mm):"/>
+                        <TextField fx:id="campoLargura" prefWidth="60"/>
+                        <Label text="Altura (mm):"/>
+                        <TextField fx:id="campoAltura"  prefWidth="60"/>
+                    </HBox>
+
+                    <Separator/>
+
+                    <HBox spacing="10">
+                        <Button text="Salvar Edição" onAction="#salvar"
+                                styleClass="btn-salvar"/>
+                        <Button text="Imprimir" onAction="#imprimir"
+                                styleClass="btn-imprimir"/>
+                    </HBox>
+
+                    <Label fx:id="mensagem" wrapText="true"/>
+                </VBox>
+            </ScrollPane>
+        </HBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding><Insets top="10" right="20" bottom="10" left="20"/></padding>
+            <Button text="Fechar" onAction="#fechar" styleClass="btn-fechar"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

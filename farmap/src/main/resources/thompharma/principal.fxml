@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="thompharma.telas.PrincipalController"
+            stylesheets="@thompharma.css">
+
+    <top>
+        <VBox styleClass="cabecalho">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label fx:id="labelUsuario"
+                       text="ThomPharma"
+                       styleClass="cabecalho-titulo"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+            <padding>
+                <Insets top="30" right="40" bottom="30" left="40"/>
+            </padding>
+
+            <!-- cadastros (azul) -->
+            <VBox spacing="8" alignment="CENTER">
+                <Label text="CADASTROS"
+                       style="-fx-text-fill: #565f89; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+                <HBox spacing="14" alignment="CENTER">
+                    <Button fx:id="btnMatPrimas" text="Mat. Primas"  prefWidth="160" prefHeight="64"
+                            styleClass="btn-menu-cadastro" onAction="#abrirMatPrimas"/>
+                    <Button text="Clientes"     prefWidth="160" prefHeight="64"
+                            styleClass="btn-menu-cadastro" onAction="#abrirClientes"/>
+                    <Button text="Prescritores" prefWidth="160" prefHeight="64"
+                            styleClass="btn-menu-cadastro" onAction="#abrirPrescritores"/>
+                </HBox>
+            </VBox>
+
+            <!-- operacoes (verde) -->
+            <VBox spacing="8" alignment="CENTER">
+                <Label text="OPERAÇÕES"
+                       style="-fx-text-fill: #565f89; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+                <HBox spacing="14" alignment="CENTER">
+                    <Button text="Receitas"    prefWidth="160" prefHeight="64"
+                            styleClass="btn-menu-operacao" onAction="#abrirReceitas"/>
+                    <Button text="Calculadora" prefWidth="160" prefHeight="64"
+                            styleClass="btn-menu-operacao" onAction="#abrirCalculadora"/>
+                    <Button text="Pedidos"     prefWidth="160" prefHeight="64"
+                            styleClass="btn-menu-operacao" onAction="#abrirPedidos"/>
+                </HBox>
+            </VBox>
+
+            <!-- sistema (laranja) -->
+            <VBox spacing="8" alignment="CENTER">
+                <Label text="SISTEMA"
+                       style="-fx-text-fill: #565f89; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+                <HBox spacing="14" alignment="CENTER">
+                    <Button fx:id="btnTabelas" text="Tabelas"    prefWidth="160" prefHeight="64"
+                            styleClass="btn-menu-sistema" onAction="#abrirTabelas"/>
+                    <Button fx:id="btnRelatorios" text="Relatórios" prefWidth="160" prefHeight="64"
+                            styleClass="btn-menu-sistema" onAction="#abrirRelatorios"/>
+                    <Button text="Rótulos"    prefWidth="160" prefHeight="64"
+                            styleClass="btn-menu-sistema" onAction="#abrirRotulos"/>
+                    <Button text="Dashboard"  prefWidth="160" prefHeight="64"
+                            styleClass="btn-dashboard" onAction="#abrirDashboard"/>
+                </HBox>
+            </VBox>
+
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="22" bottom="12" left="22"/>
+            </padding>
+            <Button text="Logoff" onAction="#fazerLogoff" styleClass="btn-fechar"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="thompharma.telas.RelatoriosController"
+            stylesheets="@thompharma.css"
+            prefWidth="960" prefHeight="680">
+
+    <!-- CABEÇALHO -->
+    <top>
+        <VBox styleClass="cabecalho">
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <padding><Insets top="10" right="16" bottom="10" left="16"/></padding>
+                <Label text="📊" style="-fx-font-size: 20px;"/>
+                <Label text="Relatórios" styleClass="cabecalho-titulo" HBox.hgrow="ALWAYS"/>
+                <Button text="Fechar" styleClass="btn-fechar" onAction="#fechar"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- CONTEÚDO: TabPane com 4 abas -->
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: #1a1b26;">
+            <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
+
+            <!-- ABA 1: PEDIDOS POR PERÍODO -->
+            <Tab text="Pedidos por Período">
+                <VBox spacing="10">
+                    <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+
+                    <!-- filtros -->
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label text="De:" styleClass="form-label"/>
+                        <DatePicker fx:id="dataInicio" prefWidth="140"/>
+                        <Label text="Até:" styleClass="form-label"/>
+                        <DatePicker fx:id="dataFim" prefWidth="140"/>
+                        <Label text="Status:" styleClass="form-label"/>
+                        <ComboBox fx:id="comboPedidoStatus" prefWidth="140"/>
+                        <Button text="Gerar" styleClass="btn-calcular" onAction="#gerarPedidos"/>
+                        <Button text="Imprimir" styleClass="btn-imprimir" onAction="#imprimirPedidos"/>
+                    </HBox>
+
+                    <!-- tabela -->
+                    <TableView fx:id="tabelaPedidos" VBox.vgrow="ALWAYS"
+                               style="-fx-background-color: #1e2236;"/>
+
+                    <!-- rodapé -->
+                    <Label fx:id="labelTotalPedidos" text="Total: 0 pedido(s)"
+                           style="-fx-text-fill: #a9b1d6; -fx-font-size: 12px;"/>
+                </VBox>
+            </Tab>
+
+            <!-- ABA 2: ESTOQUE -->
+            <Tab text="Estoque de Mat. Primas">
+                <VBox spacing="10">
+                    <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label text="Situação:" styleClass="form-label"/>
+                        <ComboBox fx:id="comboEstoqueFiltro" prefWidth="180"/>
+                        <Button text="Gerar" styleClass="btn-calcular" onAction="#gerarEstoque"/>
+                        <Button text="Imprimir" styleClass="btn-imprimir" onAction="#imprimirEstoque"/>
+                    </HBox>
+
+                    <TableView fx:id="tabelaEstoque" VBox.vgrow="ALWAYS"
+                               style="-fx-background-color: #1e2236;"/>
+
+                    <Label fx:id="labelResumoEstoque" text="Carregando..."
+                           style="-fx-text-fill: #a9b1d6; -fx-font-size: 12px;"/>
+                </VBox>
+            </Tab>
+
+            <!-- ABA 3: RÓTULOS EMITIDOS -->
+            <Tab text="Rótulos Emitidos">
+                <VBox spacing="10">
+                    <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label text="De:" styleClass="form-label"/>
+                        <DatePicker fx:id="dataInicioRotulo" prefWidth="140"/>
+                        <Label text="Até:" styleClass="form-label"/>
+                        <DatePicker fx:id="dataFimRotulo" prefWidth="140"/>
+                        <Label text="Busca:" styleClass="form-label"/>
+                        <TextField fx:id="campoBuscaRotulo" prefWidth="160"
+                                   promptText="cliente ou fórmula"/>
+                        <Button text="Gerar" styleClass="btn-calcular" onAction="#gerarRotulos"/>
+                        <Button text="Imprimir" styleClass="btn-imprimir" onAction="#imprimirRotulos"/>
+                    </HBox>
+
+                    <TableView fx:id="tabelaRotulos" VBox.vgrow="ALWAYS"
+                               style="-fx-background-color: #1e2236;"/>
+
+                    <Label fx:id="labelTotalRotulos" text="Total: 0 rótulo(s)"
+                           style="-fx-text-fill: #a9b1d6; -fx-font-size: 12px;"/>
+                </VBox>
+            </Tab>
+
+            <!-- ABA 4: CLIENTES MAIS ATENDIDOS -->
+            <Tab text="Clientes Mais Atendidos">
+                <VBox spacing="10">
+                    <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label text="Período:" styleClass="form-label"/>
+                        <ComboBox fx:id="comboPeriodoClientes" prefWidth="180"/>
+                        <Button text="Gerar" styleClass="btn-calcular" onAction="#gerarClientes"/>
+                        <Button text="Imprimir" styleClass="btn-imprimir" onAction="#imprimirClientes"/>
+                    </HBox>
+
+                    <TableView fx:id="tabelaClientes" VBox.vgrow="ALWAYS"
+                               style="-fx-background-color: #1e2236;"/>
+
+                    <Label text="Top 20 clientes por número de pedidos no período selecionado."
+                           style="-fx-text-fill: #565f89; -fx-font-size: 11px;"/>
+                </VBox>
+            </Tab>
+
+        </TabPane>
+    </center>
+
+</BorderPane>

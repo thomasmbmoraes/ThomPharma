@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="thompharma.telas.CalculadoraController"
+            stylesheets="@thompharma.css">
+
+    <top>
+        <VBox styleClass="cabecalho">
+            <Label text="Calculadora Farmacêutica" styleClass="cabecalho-titulo"/>
+        </VBox>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <padding><Insets top="10" right="20" bottom="10" left="20"/></padding>
+
+            <!-- ABA 1: FLORAL -->
+            <Tab text="Floral">
+                <VBox spacing="14" prefWidth="580">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                    <Label text="Cálculo para Fórmulas Florais"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                    <Label text="Referência: 30 ml → 0,06 ml/floral | 100 ml → 0,2 ml/floral"
+                           style="-fx-text-fill: #565f89;"/>
+
+                    <GridPane hgap="10" vgap="8">
+                        <Label text="Volume total (ml):"  GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="floralVolume"   GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                   prefWidth="120" promptText="Ex: 30"/>
+                        <Label text="Número de florais:"  GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="floralNumFlorais" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                   prefWidth="120" promptText="Ex: 5"/>
+                    </GridPane>
+
+                    <HBox spacing="10">
+                        <Button text="Calcular" onAction="#calcularFloral" styleClass="btn-calcular"/>
+                        <Button text="Limpar"   onAction="#limparFloral"/>
+                    </HBox>
+                    <TextArea fx:id="floralResultado" prefHeight="240"
+                              editable="false"
+                              style="-fx-font-family: 'Consolas', monospace;"/>
+                </VBox>
+            </Tab>
+
+            <!-- ABA 2: HOMEOPATIA LIQUIDA -->
+            <Tab text="Homeopatia Líquida">
+                <VBox spacing="14" prefWidth="580">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                    <Label text="Cálculo para Homeopatia Líquida (CH / DH)"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                    <Label text="Distribui as gotas igualmente entre os medicamentos"
+                           style="-fx-text-fill: #565f89;"/>
+
+                    <GridPane hgap="10" vgap="8">
+                        <Label text="Volume total (ml):"       GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="homoLiqVolume"       GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                   prefWidth="120" promptText="Ex: 30"/>
+                        <Label text="Número de medicamentos:"  GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="homoLiqNumMeds"      GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                   prefWidth="120" promptText="Ex: 3"/>
+                        <Label text="Escala:"                  GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <ComboBox fx:id="homoLiqEscala"        GridPane.rowIndex="2" GridPane.columnIndex="1"
+                                  prefWidth="140"/>
+                    </GridPane>
+
+                    <HBox spacing="10">
+                        <Button text="Calcular" onAction="#calcularHomoLiq" styleClass="btn-calcular"/>
+                        <Button text="Limpar"   onAction="#limparHomoLiq"/>
+                    </HBox>
+                    <TextArea fx:id="homoLiqResultado" prefHeight="210"
+                              editable="false"
+                              style="-fx-font-family: 'Consolas', monospace;"/>
+                </VBox>
+            </Tab>
+
+            <!-- ABA 3: HOMEOPATIA GLOBULOS -->
+            <Tab text="Homeopatia Glóbulos">
+                <VBox spacing="14" prefWidth="580">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                    <Label text="Cálculo para Homeopatia em Glóbulos"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                    <Label text="Referência: 20 ml → 0,6 ml de glóbulos | 30 ml → 0,9 ml (3% do volume)"
+                           style="-fx-text-fill: #565f89;"/>
+
+                    <GridPane hgap="10" vgap="8">
+                        <Label text="Volume total (ml):"      GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="homoGlobVolume"     GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                   prefWidth="120" promptText="Ex: 20"/>
+                        <Label text="Número de medicamentos:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="homoGlobNumMeds"    GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                   prefWidth="120" promptText="Ex: 3"/>
+                    </GridPane>
+
+                    <HBox spacing="10">
+                        <Button text="Calcular" onAction="#calcularHomoGlob" styleClass="btn-calcular"/>
+                        <Button text="Limpar"   onAction="#limparHomoGlob"/>
+                    </HBox>
+                    <TextArea fx:id="homoGlobResultado" prefHeight="250"
+                              editable="false"
+                              style="-fx-font-family: 'Consolas', monospace;"/>
+                </VBox>
+            </Tab>
+
+            <!-- ABA 4: DOSE UNICA -->
+            <Tab text="Dose Única">
+                <VBox spacing="14" prefWidth="580">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                    <Label text="Cálculo para Homeopatia — Dose Única"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                    <Label text="Volume total fixo: 0,60 ml dividido em gotas inteiras por medicamento"
+                           style="-fx-text-fill: #565f89;"/>
+
+                    <GridPane hgap="10" vgap="8">
+                        <Label text="Número de medicamentos:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="homoDoseNumMeds"    GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                   prefWidth="120" promptText="Ex: 3"/>
+                    </GridPane>
+
+                    <HBox spacing="10">
+                        <Button text="Calcular" onAction="#calcularHomoDose" styleClass="btn-calcular"/>
+                        <Button text="Limpar"   onAction="#limparHomoDose"/>
+                    </HBox>
+                    <TextArea fx:id="homoDoseResultado" prefHeight="250"
+                              editable="false"
+                              style="-fx-font-family: 'Consolas', monospace;"/>
+                </VBox>
+            </Tab>
+
+        </TabPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding><Insets top="10" right="20" bottom="10" left="20"/></padding>
+            <Button text="Fechar" onAction="#fechar" styleClass="btn-fechar"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

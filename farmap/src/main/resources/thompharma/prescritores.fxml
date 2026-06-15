@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="thompharma.telas.PrescritoresController"
+            stylesheets="@thompharma.css">
+
+    <top>
+        <VBox styleClass="cabecalho">
+            <Label text="Cadastro de Prescritores" styleClass="cabecalho-titulo"/>
+        </VBox>
+    </top>
+
+    <center>
+        <HBox spacing="20">
+            <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
+
+            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                <Label text="Prescritores:"/>
+                <TextField fx:id="campoFiltro" promptText="Filtrar por nome..."/>
+                <ComboBox fx:id="comboFiltroTipo" prefWidth="220" promptText="Filtrar por tipo..."/>
+                <TableView fx:id="tabelaPrescritores" prefHeight="500" prefWidth="320">
+                    <columns>
+                        <TableColumn fx:id="colNome"     text="Nome"     prefWidth="160"/>
+                        <TableColumn fx:id="colTipo"     text="Tipo"     prefWidth="80"/>
+                        <TableColumn fx:id="colRegistro" text="Registro" prefWidth="80"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <ScrollPane fitToWidth="true" prefWidth="400">
+                <VBox spacing="10">
+                    <padding><Insets top="5" right="10" bottom="5" left="5"/></padding>
+
+                    <Label text="Nome:"/>
+                    <TextField fx:id="campoNome"/>
+
+                    <Label text="Tipo de Registro:"/>
+                    <ComboBox fx:id="comboTipoRegistro" prefWidth="300"/>
+
+                    <Label text="Número do Registro:"/>
+                    <TextField fx:id="campoNumeroRegistro" promptText="Ex: 12345"/>
+
+                    <Label text="Telefone:"/>
+                    <TextField fx:id="campoTelefone"/>
+
+                    <Label text="Email:"/>
+                    <TextField fx:id="campoEmail"/>
+
+                    <Label text="Observações:"/>
+                    <TextArea fx:id="campoObservacoes" prefHeight="100"/>
+
+                    <Label fx:id="mensagem" wrapText="true"/>
+
+                    <HBox spacing="10">
+                        <Button text="Novo"    onAction="#novo"    styleClass="btn-novo"/>
+                        <Button text="Salvar"  onAction="#salvar"  styleClass="btn-salvar"/>
+                        <Button text="Excluir" onAction="#excluir" styleClass="btn-excluir"/>
+                    </HBox>
+                </VBox>
+            </ScrollPane>
+        </HBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding><Insets top="10" right="20" bottom="10" left="20"/></padding>
+            <Button text="Fechar" onAction="#fechar" styleClass="btn-fechar"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

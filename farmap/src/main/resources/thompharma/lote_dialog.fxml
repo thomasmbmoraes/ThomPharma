@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="12" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="thompharma.telas.LoteDialogController"
+      stylesheets="@thompharma.css"
+      style="-fx-background-color: #1a1b26;">
+    <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+
+    <Label text="Cadastro de Lote"
+           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #7aa2f7;"/>
+
+    <HBox spacing="12">
+        <VBox spacing="5">
+            <Label text="Nome do Lote:"/>
+            <TextField fx:id="campoNomeLote" prefWidth="180"/>
+        </VBox>
+        <VBox spacing="5">
+            <Label text="Validade:"/>
+            <TextField fx:id="campoValidade" promptText="dd/mm/aaaa" prefWidth="120"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="12">
+        <VBox spacing="5">
+            <Label text="Quantidade:"/>
+            <TextField fx:id="campoQuantidade" prefWidth="100"/>
+        </VBox>
+        <VBox spacing="5">
+            <Label text="Custo:"/>
+            <TextField fx:id="campoCusto" prefWidth="100"/>
+        </VBox>
+        <VBox spacing="5">
+            <Label text="Densidade:"/>
+            <TextField fx:id="campoDensidade" prefWidth="90"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="12">
+        <VBox spacing="5">
+            <Label text="Fator 1 (preço):"/>
+            <TextField fx:id="campoFator" prefWidth="110"/>
+        </VBox>
+        <VBox spacing="5">
+            <Label text="Fator 2 (correção/marca):"/>
+            <TextField fx:id="campoFator2" prefWidth="140"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="12">
+        <VBox spacing="5">
+            <Label text="End. Uso:"/>
+            <TextField fx:id="campoEnderecoUso" prefWidth="150"/>
+        </VBox>
+        <VBox spacing="5">
+            <Label text="End. Estoque:"/>
+            <TextField fx:id="campoEnderecoEstoque" prefWidth="150"/>
+        </VBox>
+    </HBox>
+
+    <Label text="Fornecedor:"/>
+    <ComboBox fx:id="comboFornecedor" prefWidth="320"/>
+
+    <Label fx:id="mensagem" wrapText="true"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Salvar"   onAction="#salvar"   styleClass="btn-salvar"/>
+        <Button text="Cancelar" onAction="#cancelar" styleClass="btn-fechar"/>
+    </HBox>
+
+</VBox>

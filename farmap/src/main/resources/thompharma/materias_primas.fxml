@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="thompharma.telas.MateriasPrimasController"
+            stylesheets="@thompharma.css">
+
+    <top>
+        <VBox styleClass="cabecalho">
+            <Label text="Cadastro de Matérias-Primas" styleClass="cabecalho-titulo"/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <padding><Insets top="10" right="20" bottom="10" left="20"/></padding>
+
+            <HBox spacing="20">
+
+                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                    <Label text="Matérias-Primas:"/>
+                    <TextField fx:id="campoFiltro" promptText="Filtrar..."/>
+                    <TableView fx:id="tabelaMateriasPrimas" prefHeight="260">
+                        <columns>
+                            <TableColumn fx:id="colNome"    text="Nome"   prefWidth="200"/>
+                            <TableColumn fx:id="colUnidade" text="Un."    prefWidth="50"/>
+                            <TableColumn fx:id="colTipo"    text="Tipo"   prefWidth="80"/>
+                            <TableColumn fx:id="colSaldo"   text="Saldo"  prefWidth="80"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="10">
+                        <Button text="Nova"   onAction="#novo"    styleClass="btn-novo"/>
+                        <Button text="Salvar" onAction="#salvar"  styleClass="btn-salvar"/>
+                        <Button text="Excluir" onAction="#excluir" styleClass="btn-excluir"/>
+                    </HBox>
+                </VBox>
+
+                <ScrollPane fitToWidth="true" prefWidth="420" prefHeight="320">
+                    <VBox spacing="8">
+                        <padding><Insets top="5" right="10" bottom="5" left="5"/></padding>
+
+                        <Label text="Código:"/>
+                        <TextField fx:id="campoCodigo" editable="false"
+                                   style="-fx-opacity: 0.6;"/>
+
+                        <Label text="Nome:"/>
+                        <TextField fx:id="campoNome"/>
+
+                        <HBox spacing="10">
+                            <VBox spacing="5">
+                                <Label text="Unidade:"/>
+                                <ComboBox fx:id="comboUnidade" prefWidth="80"/>
+                            </VBox>
+                            <VBox spacing="5">
+                                <Label text="Tipo:"/>
+                                <ComboBox fx:id="comboTipo" prefWidth="150"/>
+                            </VBox>
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <VBox spacing="5">
+                                <Label text="Controlada:"/>
+                                <ComboBox fx:id="comboControlada" prefWidth="150"/>
+                            </VBox>
+                            <VBox spacing="5">
+                                <Label text="Classe ANVISA:"/>
+                                <ComboBox fx:id="comboClasseAnvisa" prefWidth="100"/>
+                            </VBox>
+                        </HBox>
+
+                        <VBox fx:id="painelSolidoLiquido" spacing="8" visible="false" managed="false">
+                            <HBox spacing="10">
+                                <VBox spacing="5">
+                                    <Label text="Dose Mín.:"/>
+                                    <TextField fx:id="campoDoseMinima" prefWidth="90"/>
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label text="Dose Máx.:"/>
+                                    <TextField fx:id="campoDoseMaxima" prefWidth="90"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <VBox fx:id="painelCapsula" spacing="8" visible="false" managed="false">
+                            <HBox spacing="10">
+                                <VBox spacing="5">
+                                    <Label text="Vol. Cápsula:"/>
+                                    <TextField fx:id="campoVolumeCaps" prefWidth="100"/>
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label text="Peso Cápsula:"/>
+                                    <TextField fx:id="campoPesoCaps" prefWidth="100"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <VBox fx:id="painelEmbalagem" spacing="8" visible="false" managed="false">
+                            <Label text="Volume:"/>
+                            <TextField fx:id="campoVolume" prefWidth="100"/>
+                        </VBox>
+
+                        <HBox spacing="10">
+                            <VBox spacing="5">
+                                <Label text="Estoque Mín.:"/>
+                                <TextField fx:id="campoEstoqueMinimo" prefWidth="100"/>
+                            </VBox>
+                            <VBox spacing="5">
+                                <Label text="Estoque Crít.:"/>
+                                <TextField fx:id="campoEstoqueCritico" prefWidth="100"/>
+                            </VBox>
+                        </HBox>
+
+                        <HBox spacing="20">
+                            <CheckBox fx:id="checkRotulo"     text="Rótulo"/>
+                            <CheckBox fx:id="checkGeladeira"  text="Geladeira"/>
+                            <CheckBox fx:id="checkControlado" text="Controlado"/>
+                        </HBox>
+
+                        <Label text="Observações:"/>
+                        <TextArea fx:id="campoObservacoes" prefHeight="100"/>
+
+                        <Label text="Sinônimos:" style="-fx-font-weight: bold;"/>
+                        <HBox spacing="5">
+                            <TextField fx:id="campoSinonimo"
+                                       promptText="Adicionar sinônimo..."
+                                       HBox.hgrow="ALWAYS"/>
+                            <Button text="+"  onAction="#adicionarSinonimo" prefWidth="30"/>
+                            <Button text="-"  onAction="#removerSinonimo"   prefWidth="30"/>
+                        </HBox>
+                        <ListView fx:id="listaSinonimos" prefHeight="80"/>
+
+                        <Label fx:id="mensagem" wrapText="true"/>
+                    </VBox>
+                </ScrollPane>
+            </HBox>
+
+            <Separator/>
+
+            <VBox spacing="8">
+                <Label text="Lotes da Matéria-Prima Selecionada:"
+                       style="-fx-font-weight: bold;"/>
+                <TableView fx:id="tabelaLotes" prefHeight="180">
+                    <columns>
+                        <TableColumn fx:id="colLoteNome"       text="Lote"       prefWidth="100"/>
+                        <TableColumn fx:id="colLoteCusto"      text="Custo"      prefWidth="70"/>
+                        <TableColumn fx:id="colLoteQuantidade" text="Quantidade" prefWidth="90"/>
+                        <TableColumn fx:id="colLoteSaldo"      text="Saldo"      prefWidth="70"/>
+                        <TableColumn fx:id="colLoteValidade"   text="Validade"   prefWidth="90"/>
+                        <TableColumn fx:id="colLoteFornecedor" text="Fornecedor" prefWidth="150"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10">
+                    <Button text="Novo Lote"   onAction="#novoLote"   styleClass="btn-novo"/>
+                    <Button text="Salvar Lote" onAction="#salvarLote" styleClass="btn-salvar"/>
+                    <Button text="Excluir Lote" onAction="#excluirLote" styleClass="btn-excluir"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding><Insets top="10" right="20" bottom="10" left="20"/></padding>
+            <Button text="Fechar" onAction="#fechar" styleClass="btn-fechar"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

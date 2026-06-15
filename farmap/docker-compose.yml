@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: thompharma-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: DB_FARMAP
+      POSTGRES_USER: thompharma
+      POSTGRES_PASSWORD: thompharma123
+    ports:
+      - "5432:5432"
+    volumes:
+      - thompharma_data:/var/lib/postgresql/data
+      - ./docs/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+volumes:
+  thompharma_data:

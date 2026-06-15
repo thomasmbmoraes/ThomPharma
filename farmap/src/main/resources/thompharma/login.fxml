@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="thompharma.telas.LoginController"
+           styleClass="login-root"
+           stylesheets="@thompharma.css">
+
+    <VBox alignment="CENTER" spacing="18" maxWidth="400"
+          styleClass="login-card">
+
+        <!-- titulo e subtitulo -->
+        <Label text="ThomPharma" styleClass="login-titulo"/>
+        <Label text="Sistema de Farmácia de Manipulação"
+               styleClass="login-subtitulo"/>
+
+        <Separator style="-fx-padding: 4 0;"/>
+
+        <!-- campos -->
+        <VBox spacing="6">
+            <Label text="USUÁRIO" styleClass="login-label"/>
+            <TextField fx:id="campoUsuario"
+                       styleClass="login-field"
+                       promptText="Digite seu usuário"/>
+        </VBox>
+
+        <VBox spacing="6">
+            <Label text="SENHA" styleClass="login-label"/>
+            <!-- onAction permite pressionar Enter para logar -->
+            <PasswordField fx:id="campoSenha"
+                           styleClass="login-field"
+                           promptText="••••••••"
+                           onAction="#fazerLogin"/>
+        </VBox>
+
+        <Button text="Entrar" onAction="#fazerLogin"
+                maxWidth="Infinity" styleClass="login-btn"/>
+
+        <Label fx:id="mensagemErro" styleClass="login-erro"
+               alignment="CENTER" maxWidth="Infinity"/>
+
+    </VBox>
+
+</StackPane>

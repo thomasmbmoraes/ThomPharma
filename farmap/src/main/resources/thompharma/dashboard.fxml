@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="thompharma.telas.DashboardController"
+            stylesheets="@thompharma.css"
+            prefWidth="1000" prefHeight="700">
+
+    <top>
+        <VBox styleClass="cabecalho">
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <padding><Insets top="10" right="16" bottom="10" left="16"/></padding>
+                <Label text="Dashboard" styleClass="cabecalho-titulo" HBox.hgrow="ALWAYS"/>
+                <Button text="Atualizar" styleClass="btn-calcular" onAction="#atualizar"/>
+                <Button text="Fechar" styleClass="btn-fechar" onAction="#fechar"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="24">
+            <padding><Insets top="28" right="32" bottom="28" left="32"/></padding>
+
+            <!-- Linha 1: Pedidos -->
+            <Label text="PEDIDOS" style="-fx-text-fill: #565f89; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            <HBox spacing="16">
+                <!-- Pedidos Hoje -->
+                <VBox styleClass="dashboard-card dashboard-card-azul" prefWidth="160" alignment="CENTER" spacing="6">
+                    <Label text="PEDIDOS HOJE" styleClass="dashboard-card-titulo"/>
+                    <Label fx:id="lblPedidosHoje" text="—" styleClass="dashboard-card-valor" style="-fx-text-fill: #7aa2f7;"/>
+                </VBox>
+                <!-- Aguardando -->
+                <VBox styleClass="dashboard-card dashboard-card-laranja" prefWidth="160" alignment="CENTER" spacing="6">
+                    <Label text="AGUARDANDO" styleClass="dashboard-card-titulo"/>
+                    <Label fx:id="lblAguardando" text="—" styleClass="dashboard-card-valor" style="-fx-text-fill: #e0af68;"/>
+                </VBox>
+                <!-- Em Produção -->
+                <VBox styleClass="dashboard-card dashboard-card-roxo" prefWidth="160" alignment="CENTER" spacing="6">
+                    <Label text="EM PRODUÇÃO" styleClass="dashboard-card-titulo"/>
+                    <Label fx:id="lblEmProducao" text="—" styleClass="dashboard-card-valor" style="-fx-text-fill: #bb9af7;"/>
+                </VBox>
+                <!-- Prontos -->
+                <VBox styleClass="dashboard-card dashboard-card-verde" prefWidth="160" alignment="CENTER" spacing="6">
+                    <Label text="PRONTOS" styleClass="dashboard-card-titulo"/>
+                    <Label fx:id="lblProntos" text="—" styleClass="dashboard-card-valor" style="-fx-text-fill: #9ece6a;"/>
+                </VBox>
+                <!-- Entregues Hoje -->
+                <VBox styleClass="dashboard-card dashboard-card-ciano" prefWidth="160" alignment="CENTER" spacing="6">
+                    <Label text="ENTREGUES HOJE" styleClass="dashboard-card-titulo"/>
+                    <Label fx:id="lblEntreguesHoje" text="—" styleClass="dashboard-card-valor" style="-fx-text-fill: #73daca;"/>
+                </VBox>
+            </HBox>
+
+            <!-- Linha 2: Estoque e Cadastros -->
+            <Label text="ESTOQUE E CADASTROS" style="-fx-text-fill: #565f89; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            <HBox spacing="16">
+                <!-- Estoque Crítico -->
+                <VBox styleClass="dashboard-card dashboard-card-vermelho" prefWidth="200" alignment="CENTER" spacing="6">
+                    <Label text="ESTOQUE CRÍTICO" styleClass="dashboard-card-titulo"/>
+                    <Label fx:id="lblEstoqueCritico" text="—" styleClass="dashboard-card-valor" style="-fx-text-fill: #f7768e;"/>
+                    <Label text="mat. primas abaixo do mínimo" style="-fx-text-fill: #565f89; -fx-font-size: 10px;"/>
+                </VBox>
+                <!-- Lotes Vencidos -->
+                <VBox styleClass="dashboard-card dashboard-card-vermelho" prefWidth="200" alignment="CENTER" spacing="6">
+                    <Label text="LOTES VENCIDOS" styleClass="dashboard-card-titulo"/>
+                    <Label fx:id="lblLotesVencidos" text="—" styleClass="dashboard-card-valor" style="-fx-text-fill: #f7768e;"/>
+                    <Label text="lotes com saldo e vencidos" style="-fx-text-fill: #565f89; -fx-font-size: 10px;"/>
+                </VBox>
+                <!-- Total Receitas -->
+                <VBox styleClass="dashboard-card dashboard-card-azul" prefWidth="200" alignment="CENTER" spacing="6">
+                    <Label text="FÓRMULAS ATIVAS" styleClass="dashboard-card-titulo"/>
+                    <Label fx:id="lblTotalReceitas" text="—" styleClass="dashboard-card-valor" style="-fx-text-fill: #7aa2f7;"/>
+                    <Label text="receitas cadastradas" style="-fx-text-fill: #565f89; -fx-font-size: 10px;"/>
+                </VBox>
+                <!-- Total Rótulos -->
+                <VBox styleClass="dashboard-card dashboard-card-ciano" prefWidth="200" alignment="CENTER" spacing="6">
+                    <Label text="RÓTULOS EMITIDOS" styleClass="dashboard-card-titulo"/>
+                    <Label fx:id="lblTotalRotulos" text="—" styleClass="dashboard-card-valor" style="-fx-text-fill: #73daca;"/>
+                    <Label text="total histórico" style="-fx-text-fill: #565f89; -fx-font-size: 10px;"/>
+                </VBox>
+            </HBox>
+
+            <!-- Rodapé -->
+            <HBox alignment="CENTER_RIGHT">
+                <Label fx:id="lblAtualizadoEm" text="" style="-fx-text-fill: #565f89; -fx-font-size: 11px;"/>
+            </HBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>
